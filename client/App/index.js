@@ -29,7 +29,6 @@ ReactDOM.render (
     </Router> */}
     <Router history={browserHistory}>
         <Route path="/" component={App}>
-            {/* <IndexRoute component={Home}/> */}
             <Route path="SignUp" component={SignUp}/>
             <Route path="SignIn" component={SignIn}/>
             {/* <Route path="UserCenter" component={UserCenter}/>

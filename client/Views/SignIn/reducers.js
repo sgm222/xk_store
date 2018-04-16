@@ -8,7 +8,7 @@ import {
   } from './constants';
 
 const initialUserState = {
-    fetchingUser: false,
+    fetchingUser: true,
     error: null,
     userName: null,
     passWord: null,
@@ -59,6 +59,7 @@ const initialUserState = {
       case SIGNIN_FAILURE:
         console.log('signin-falure')
         return Object.assign({}, initialUserState, {
+          fetchingUser: false,
           error: '不能为不能为空',
         }); 
       

@@ -9,8 +9,10 @@ import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
 import bigg from 'SharedStyles/bigg.jpg';
 import Button from 'Components/Button';
-import { fetchSignIn } from './actions';
+import { fetchSignIn, getUser } from './actions';
 import { SIGNIN_NAMENULL } from './constants';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+
 let userNameTF;
 let passTF;
 class SignIn extends Component {
@@ -79,13 +81,14 @@ class SignIn extends Component {
         )
     }
     render() {
+        console.log('signin');
         const props = this.props.user;
         return (
         <div className="login-banner">
             <div className="login-main">
-                <div className="login-banner-bg"><span></span><img src={bigg} /></div>
+                <div className="login-banner-bg"><span></span></div>
                 <div className="login-box">
-                <h3 className="title">登录商城</h3>
+                <h3 className="title">登录</h3>
                 <div style={{
                     clear: 'both'
                 }}></div>
@@ -93,6 +96,7 @@ class SignIn extends Component {
                     <MuiThemeProvider>
                     <Card style={{
                                 marginTop: "1em",
+                                marginLeft: "1em",
                                 width: "20em",
                             }}>
                                 <div style={{
@@ -139,7 +143,7 @@ class SignIn extends Component {
                                     <span>{this.state.error}</span>
                                     <Button onClick={() => this.onSignIn()}
                                                 primary={true}
-                                                style={{width: "10em", alignSelf: "center"}}
+                                                style={{width: "256px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                                     >登录</Button>
                                 </div>
                             </Card>
@@ -156,7 +160,4 @@ export default connect(
     (state) => { return {
         user: state.user,
       }; },
-    (dispatch) => { return {
-        fetchSignIn: (body) => { dispatch(fetchSignIn(body)); }, 
-    }}
 )(SignIn);

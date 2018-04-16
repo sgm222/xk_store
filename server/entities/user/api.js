@@ -24,12 +24,12 @@ let fileName;
 const userAPI = (app) => {
 
     app.get('/api/user/getUser', (req, res) => {
-        let hasLogin = new LoginCheck().checkLogin(req, res);
-        res.json(
-            new ResponseUtil({
-                hasLogin: hasLogin,
-                user: req.session.user
-        }, null));
+            let hasLogin = new LoginCheck().checkLogin(req, res);
+            res.json(
+                new ResponseUtil({
+                    hasLogin: hasLogin,
+                    user: req.session.user,
+            }, null));
     });
 
     app.post("/api/user/SignUp", new LoginCheck().ifLoginReturn,

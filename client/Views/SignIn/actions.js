@@ -12,7 +12,6 @@ import {
 
 export const getUser = () => {
   return (dispatch, getState) => {
-    console.log('return getuser');
     fetchUser().then(
         (response) => {
             return response.data.result;
@@ -20,8 +19,12 @@ export const getUser = () => {
     ).then(
         (json) => {
             if (json) {
-              if (!json.hasLogin) dispatch({ type: FETCHING_USER_FAILURE });
-              else dispatch({ type: FETCHING_USER_SUCCESS, payload: json.user });
+              if (!json.hasLogin) {
+                  dispatch({ type: FETCHING_USER_FAILURE });
+              }
+              else {
+                  dispatch({ type: FETCHING_USER_SUCCESS, payload: json.user });
+              }
             }
         }
     ).catch(
@@ -45,10 +48,9 @@ export const fetchSignIn = (body) => {
             }
         ).then(
             (json) => {
-                console.log(JSON.stringify(json));
                 if (json.result) {
                     if (json.result.redirect) {
-                        //window.location = json.result.redirect;
+                        window.location = json.result.redirect;
                     }
                 } else if (json.error) {
                     dispatch(SIGNIN_FAILURE);

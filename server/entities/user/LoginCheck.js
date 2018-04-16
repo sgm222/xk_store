@@ -17,8 +17,7 @@ class LoginCheck {
         // console.log("user save success 4444 " + req.session.user);
         if (req.session.user) {
             console.log("已登录 返回");
-            req.flash('error', '已登录');
-            return res.send(new ResponseUtil({redirect: "/"}, null));//返回之前的页面
+            return res.send(new ResponseUtil({redirect: "/Home"}, null));//返回之前的页面
         } else {
             console.log("未登录");
         }

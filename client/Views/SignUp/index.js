@@ -7,7 +7,7 @@ import SelectField from 'material-ui/SelectField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import bigg from 'SharedStyles/bigg.jpg';
-
+import Button from 'Components/Button';
 let uploadInput;
 let userNameTF;
 let passTF;
@@ -129,9 +129,9 @@ class SignUp extends React.Component {
         return (
       <div className="login-banner">
       <div className="login-main">
-        <div className="login-banner-bg"><span></span><img src={bigg} /></div>
+        <div className="login-banner-bg"><span></span></div>
         <div className="login-box">
-          <h3 className="title">登录商城</h3>
+          <h3 className="title">注册</h3>
           <div className="clear"></div>
           <div className="login-form">
             <MuiThemeProvider>
@@ -212,11 +212,10 @@ class SignUp extends React.Component {
                                    name="uploadInput"
                                    style={{display: "none"}}
                                    onChange={(event) => this.avatarSelected(event)}/>
-                             <RaisedButton onTouchTap={() => this.onSignUp()}
+                             <Button onClick={() => this.onSignUp()}
                                           primary={true}
-                                          label={"注册"}
-                                          style={{width: "10em", alignSelf: "center"}}
-                            />
+                                          style={{width: "256px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                            >注册</Button>
                         </div>
                     </Card>
                     </MuiThemeProvider>
