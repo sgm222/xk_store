@@ -7,7 +7,7 @@ import { feedReducer } from '../Views/Home/reducers';
 import { singleDiscussionReducer } from '../Views/SingleDiscussion/reducers';
 import { newDiscussionReducer } from '../Views/NewDiscussion/reducers';
 import { adminInfoReducer } from '../Views/AdminDashboard/reducers';
-import { userProfileReducer } from '../Views/UserProfile/reducers';
+import { goodsReducer } from '../Views/Goods/reducers';
 
 // root reducer for app
 const rootReducer = combineReducers({
@@ -16,7 +16,7 @@ const rootReducer = combineReducers({
   discussion: singleDiscussionReducer,
   newDiscussion: newDiscussionReducer,
   adminInfo: adminInfoReducer,
-  userProfile: userProfileReducer,
+  goods: goodsReducer,
 });
 
 // dev tool extension

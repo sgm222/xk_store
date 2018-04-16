@@ -125,7 +125,6 @@ class SignUp extends React.Component {
     }
 
     render() {
-        console.log('signup');
         return (
       <div className="login-banner">
       <div className="login-main">
@@ -196,7 +195,7 @@ class SignUp extends React.Component {
 
                             <div style={{flex: 1,height:"32px",marginBottom:"0.5em"}}>
                                 <span>头像</span>
-                                <RaisedButton onTouchTap={() => this.onUpLoadClick()}
+                                <RaisedButton onClick={() => this.onUpLoadClick()}
                                               label={"选择文件"} 
                                               secondary={true}
                                               style={{marginLeft: "0.5em",backgroundColor:"#ddd"}}

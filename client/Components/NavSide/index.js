@@ -31,10 +31,10 @@ class NavSide extends Component {
 					<span className='user-span'>{this.props.user.userName}</span>
                     </li>
                     <li>
-                        <a className="active-menu"  href=""><i className="fa fa-dashboard fa-3x"></i>我的店铺</a>
+                        <Link className="active-menu"  to=""><i className="fa fa-dashboard fa-3x"></i>我的店铺</Link>
                     </li>
                      <li>
-                        <a  href="ui.html"><i className="fa fa-desktop fa-3x"></i>商品管理</a>
+                        <Link  to="/Goods"><i className="fa fa-desktop fa-3x"></i>商品管理</Link>
                     </li>
                     <li>
                         <a  href="tab-panel.html"><i className="fa fa-qrcode fa-3x"></i>订单管理</a>
@@ -55,7 +55,7 @@ class NavSide extends Component {
                         <a   href="registeration.html"><i className="fa fa-laptop fa-3x"></i> Registeration</a>
                     </li>	
 					                   
-                    <li>
+                    {/* <li>
                         <a href="#"><i className="fa fa-sitemap fa-3x"></i> Multi-Level Dropdown<span className="fa arrow"></span></a>
                         <ul className="nav nav-second-level">
                             <li>
@@ -84,7 +84,7 @@ class NavSide extends Component {
                       </li>  
                   <li  >
                         <a  href="blank.html"><i className="fa fa-square-o fa-3x"></i> Blank Page</a>
-                    </li>	
+                    </li>	 */}
                 </ul>
                
             </div>

@@ -12,6 +12,8 @@ import App from './App';
 import SignIn from '../Views/SignIn';
 import SignUp from '../Views/SignUp';
 import Home from '../Views/Home';
+import Goods from '../Views/Goods';
+import AddGoods from '../Views/Goods/addgoods';
 ReactDOM.render (
   <Provider store={appStore}>
     {/* <Router history={browserHistory}>
@@ -31,6 +33,8 @@ ReactDOM.render (
         <Route path="/" component={App}>
             <Route path="SignUp" component={SignUp}/>
             <Route path="SignIn" component={SignIn}/>
+            <Route path="Goods" component={Goods}/>
+            <Route path="AddGoods" component={AddGoods}/>
             {/* <Route path="UserCenter" component={UserCenter}/>
             <Route path="MyFollow" component={MyFollow}/>
             <Route path="WriteBlog" component={WriteBlog}/>

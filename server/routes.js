@@ -5,10 +5,10 @@ const path = require('path');
 const express = require('express');
 
 const userAPI = require('./entities/user/api');
-const forumAPI = require('./entities/forum/api');
+const goodsAPI = require('./entities/goods/api');
 const discussionAPI = require('./entities/discussion/api');
 const opinionAPI = require('./entities/opinion/api');
-const adminAPI = require('./entities/admin/api');
+//const adminAPI = require('./entities/admin/api');
 
 /**
  * routes configurations
@@ -26,8 +26,8 @@ const routesConfig = (app) => {
   // apply user apis
   userAPI(app);
 
-  // apply forum apis
-  forumAPI(app);
+  // apply goods apis
+  goodsAPI(app);
 
   // apply discussion apis
   discussionAPI(app);
@@ -36,7 +36,7 @@ const routesConfig = (app) => {
   opinionAPI(app);
 
   // apply admin apis
-  adminAPI(app);
+  //adminAPI(app);
 
   // all get request will send index.html for react-router
   // to handle the route request
