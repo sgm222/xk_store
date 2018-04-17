@@ -1,2 +1,4 @@
-export const FETCH_GOODS_SUCCESS = 'fetch_goods_success';
-export const FETCH_GOODS_FAILURE = 'fetch_goods_failure';
+export const FETCHING_GOODS_SUCCESS = 'fetching_goods_success';
+export const FETCHING_GOODS_FAILURE = 'fetching_goods_failure';
+export const FETCHING_GOODSDETAIL_SUCCESS = 'fetching_goodsDetail_success';
+export const FETCHING_GOODSDETAIL_FAILURE = 'fetching_goodsDetail_failure';

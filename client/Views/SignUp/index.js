@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {RadioGroup, Radio} from 'react-radio-group';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TextField from "material-ui/TextField";
 import Card from "material-ui/Card";
@@ -13,6 +14,7 @@ let userNameTF;
 let passTF;
 let passConfirmTF;
 let file;
+let typeTF;
 class SignUp extends React.Component {
     constructor(props) {
         super(props);
@@ -23,14 +25,19 @@ class SignUp extends React.Component {
             nameError: "",
             passError: "",
             passConfirmError: "",
+            selectedValue : '1'
         }
     }
-
+    handleChange(event) { 
+        this.setState({selectedValue:event});
+    } 
+    
     componentDidMount() {
         uploadInput = this.refs.uploadInput;
         userNameTF = this.refs.userNameTF;
         passTF = this.refs.passTF;
         passConfirmTF = this.refs.passConfirmTF;
+        typeTF = this.refs.typeTF;
     }
 
     genderSelected(event, index, value) {
@@ -46,19 +53,18 @@ class SignUp extends React.Component {
 
     avatarSelected(event) {
         file = uploadInput.files[0];
-        console.info("file=" + file.name);
         this.setState({
             selectedFileName: file.name
         });
     }
 
     onSignUp() {
-        console.log('onsignin');
         let userNameStr = userNameTF.getValue();
         let passStr = passTF.getValue();
         let passConfirmStr = passConfirmTF.getValue();
-
+        let typeStr = typeTF.props.selectedValue;
         let infoFinished = true;
+        let reg = /^(?![^a-zA-Z]+$)(?!\D+$){6,20}/;
         if ("" === userNameStr) {
             this.setState({
                 nameError: "不能为空"
@@ -71,12 +77,19 @@ class SignUp extends React.Component {
             });
             infoFinished = false;
         }
+        if (!reg.test(passStr)) {
+            this.setState({
+                passError: "请输入6-20位字母数字组合密码"
+            });
+            infoFinished = false;
+        }
         if ("" === passConfirmStr) {
             this.setState({
                 passConfirmError: "不能为空"
             });
             infoFinished = false;
         }
+
         if (passConfirmStr !== passStr) {
             this.setState({
                 passError: "密码不一致",
@@ -87,14 +100,12 @@ class SignUp extends React.Component {
         if (!infoFinished) {
             return;
         }
-
-       
         let formData = new FormData();
         formData.append('avatar', file);
         formData.append('userName', userNameStr);
         formData.append('passWord', passStr);
         formData.append('passConfirm', passConfirmStr);
-
+        formData.append('type', typeStr);
         let url = "/api/user/SignUp";
         fetch(url, {
             method: "post",
@@ -129,13 +140,14 @@ class SignUp extends React.Component {
       <div className="login-banner">
       <div className="login-main">
         <div className="login-banner-bg"><span></span></div>
-        <div className="login-box">
+        <div className="login-box2">
           <h3 className="title">注册</h3>
           <div className="clear"></div>
           <div className="login-form">
             <MuiThemeProvider>
             <Card style={{
                         marginTop: "1em",
+                        marginLeft: "1em",
                         width: "20em",
                     }}>
                         <div style={{
@@ -192,16 +204,22 @@ class SignUp extends React.Component {
                                        ref="passConfirmTF"
                                        id="passConfirmTF"
                                        name="passConfirmTF"/>
-
-                            <div style={{flex: 1,height:"32px",marginBottom:"0.5em"}}>
+                            <RadioGroup name="typeTF" 
+                                        ref="typeTF"
+                                        selectedValue={this.state.selectedValue} 
+                                        onChange={(event)=>{this.handleChange(event)}}> 
+                                <Radio value="1" />卖家
+                                <Radio value="2" style={{marginLeft: "20px"}}/>管理员
+                            </RadioGroup>
+                            <div style={{flex: 1,height:"32px",marginBottom:"10px",marginTop:"10px"}}>
                                 <span>头像</span>
-                                <RaisedButton onClick={() => this.onUpLoadClick()}
-                                              label={"选择文件"} 
+                                <Button onClick={() => this.onUpLoadClick()}
+                                              style={{backgroundColor:"#eee"}}
                                               secondary={true}
                                               style={{marginLeft: "0.5em",backgroundColor:"#ddd"}}
-                                />
+                                >选择文件</Button>
                             </div>
-                            <div style={{flex: 1,height:"32px"}}>
+                            <div style={{flex: 1,height:"20px"}}>
                                 {this.state.selectedFileName}
                             </div>
                             <input type="file"

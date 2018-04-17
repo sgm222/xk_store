@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TextField from "material-ui/TextField";
 import Card from "material-ui/Card";
@@ -8,12 +9,14 @@ import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
 import bigg from 'SharedStyles/bigg.jpg';
 import Button from 'Components/Button';
+import { Link } from 'react-router';
+import { getGoodsById } from './actions';
 let nameTF, typeTF, priceTF, weightTF, salecountTF, countTF, directionTF;
 class AddGoods extends React.Component {
     constructor(props) {
-        console.log('addgoods');
         super(props);
         this.state = {
+            add: true,
             type: 1,
             nameError: "",
             priceError: "",
@@ -25,6 +28,14 @@ class AddGoods extends React.Component {
         }
     }
     componentDidMount() {
+        const { goodsId } = this.props.params;
+        const { getGoodsById } = this.props;
+        if(goodsId) {
+            this.setState({
+                add: false
+            })
+            getGoodsById(goodsId);
+        }
         nameTF = this.refs.nameTF;
         typeTF = this.refs.typeTF;
         priceTF = this.refs.priceTF;
@@ -56,7 +67,6 @@ class AddGoods extends React.Component {
             selectedFileName: file.name
         });
     }
-
     onAdd() {
         console.log('onadd');
         let nameStr = nameTF.getValue();
@@ -147,13 +157,15 @@ class AddGoods extends React.Component {
         return (
             <MuiThemeProvider>
             <Card style={{
-                        marginTop: "1em",
-                        width: "20em",
-                        marginLeft: '240px'
+                        marginTop: "50px",
+                        width: "400px",
+                        marginLeft: '280px',
+                        padding: '50px'
                     }}>
                 <div>商品名称*</div>
                 <TextField style={{ flex: 1,height:"32px",marginBottom:"0.5em"}}
                                        errorText={this.state.nameError}
+                                       disabled={this.state.add}
                                        onChange={
                                         (event, str) => {
                                             if (this.state.nameError !== "") {
@@ -168,6 +180,12 @@ class AddGoods extends React.Component {
                 <div>种类*</div>
                 <select value={this.state.type}
                         ref="typeTF"
+                        style={{
+                            width: '256px',
+                            height: '32px',
+                            borderColor: '#e0e0e0',
+                            margin: '10px 0px'
+                        }}
                         onChange={
                             (event, value) => {
                                 this.setState({
@@ -251,13 +269,28 @@ class AddGoods extends React.Component {
                             ref="directionTF"
                             id="directionTF"
                             name="directionTF"/>  
-                 <Button onClick={() => this.onAdd()}
+                {this.state.add && <Button onClick={() => this.onAdd()}
                                           primary={true}
-                                          style={{width: "256px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
-                            >添加</Button>       
+                                          style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                >添加</Button>}
+                {!this.state.add && <Button onClick={() => this.onAdd()}
+                                          primary={true}
+                                          style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                >修改</Button>}
+                <Button
+                        primary={true}
+                        style={{width: "120px", marginLeft:"20px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                ><Link to="/Goods" style={{color:"#fff"}}>返回</Link></Button>      
             </Card>
             </MuiThemeProvider>
         );
     }
 }
-export default AddGoods;
+export default connect(
+    (state) => { return {
+        goodsDetail: state.goodsDetail,
+    }; },
+    (dispatch) => { return {
+        getGoodsById: (goodsId) => { dispatch(getGoodsById(goodsId)); },
+    }; }
+)(AddGoods);

@@ -12,31 +12,18 @@ class Goods extends Component {
     getGoods();
   }
 
-  // componentDidUpdate() {
-  //   const {
-  //     forums,
-  //     params,
-  //     currentForum,
-  //     updateCurrentForum,
-  //   } = this.props;
-
-  //   let newCurrentForum = '';
-  //   if (params.forum) newCurrentForum = params.forum;
-  //   else if (forums) newCurrentForum = forums[0].forum_slug;
-
-  //   // update current forum if necessery
-  //   if (newCurrentForum !== currentForum) updateCurrentForum(newCurrentForum);
-  // }
-
   render() {
     const { goods } = this.props;
-    console.log(goods);
     if (goods.fetchingGoods) {
-          let data = goods.goods.result;
+          let data = goods.goods;
           return (
-            <div style={{marginLeft: '240px'}}>
-              <Link to="/AddGoods" className="btn btn-success square-btn-adjust">增加商品</Link>
-              <table>
+            <div style={{marginLeft: '280px', marginTop:"20px"}}>
+              <Link to="/AddGoods" className="btn btn-success square-btn-adjust" 
+                    style={{display:'block', marginRight:'50px', width:'100px', marginTop:'20px'}}>增加商品</Link>
+              {data.error && 
+                  <span style={{marginTop:"20px", display:"block"}}>{data.error.errorMsg}</span>
+                }
+              {data.result && <table className={styles.table}>
                 <thead>
                   <tr>
                     <th>名称</th>
@@ -49,7 +36,7 @@ class Goods extends Component {
                     <th>操作</th>
                   </tr>
                 </thead>
-                {data.result && data.result.map((item, idx) => (
+                {data.result.result.map((item, idx) => (
                   <tbody>
                     <tr key={idx}>
                         <td>{item.name}</td>
@@ -60,14 +47,15 @@ class Goods extends Component {
                         <td>{item.count}</td>
                         <td>{item.direction}</td>
                         <td>
-                          <a>删除</a>
-                          <a>编辑</a>
+                          <Link >删除</Link>
+                          <Link to={`/AddGoods/${item._id}`} style={{marginLeft:'10px'}}>编辑</Link>
                         </td>
                     </tr>
                     </tbody>
                   ))
                 }
               </table>
+            }
             </div>
           );
     }

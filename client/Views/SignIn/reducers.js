@@ -13,7 +13,7 @@ const initialUserState = {
     userName: null,
     passWord: null,
     fileName: null,
-    role: null,
+    type: null,
     nameError: null,
     passError: null,
   };
@@ -25,7 +25,7 @@ const initialUserState = {
           userName,
           passWord,
           fileName,
-          role,
+          type,
           nameError,
           passError,
         } = action.payload;
@@ -36,7 +36,7 @@ const initialUserState = {
           userName,
           passWord,
           fileName,
-          role,
+          type,
           nameError,
           passError,
         };
@@ -57,7 +57,6 @@ const initialUserState = {
         });
       
       case SIGNIN_FAILURE:
-        console.log('signin-falure')
         return Object.assign({}, initialUserState, {
           fetchingUser: false,
           error: '不能为不能为空',

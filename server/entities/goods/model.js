@@ -50,12 +50,18 @@ class GoodsModel {
         let mongoUtil = new MongoUtil();
         return mongoUtil.createModel(modelName, goodsSechma, goodsValue);
     }
-
+    findGoods() {
+      let mongoUtil = new MongoUtil();
+      return mongoUtil.findModelByKeyMap(modelName, goodsSechma);
+    }
     findGoodsByUserId(userId) {
         let mongoUtil = new MongoUtil();
         return mongoUtil.findModelByKeyMap(modelName, goodsSechma, {userId, userId});
     }
-
+    findGoodsById(_id) {
+      let mongoUtil = new MongoUtil();
+      return mongoUtil.findModelByKeyMap(modelName, goodsSechma, {_id, _id});
+    }
     findUserByType(type) {
         let mongoUtil = new MongoUtil();
         return mongoUtil.findModelByKeyMap(modelName, goodsSechma, {type, type});

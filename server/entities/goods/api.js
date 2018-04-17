@@ -1,47 +1,52 @@
 const GoodsModel = require('./model');
-const getGoods = require('./controller').getGoods;
+const {getGoods, getGoodsById} = require('./controller');
 const ResponseUtil = require('../lib/ResponseUtil');
 const goodsAPI = (app) => {
   app.get('/api/goods', (req, res) => {
     let goodsModel = new GoodsModel();
-    goodsModel.findGoodsByUserId(req.session.user._id)
-    .then(
-        (models) => {
-          if (models !== null && models.length > 0) {
-            return res.send(new ResponseUtil({result: models}, null));
-          } else {
-            return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+    if(req.session.user.type === '2') {
+      goodsModel.findGoods()
+      .then(
+          (models) => {
+            if (models !== null && models.length > 0) {
+              return res.send(new ResponseUtil({result: models}, null));
+            } else {
+              return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+            }
           }
-        }
-    ).catch((e) => {
-      return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
-    })
+      ).catch((e) => {
+        return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+      })
+    } else {
+      goodsModel.findGoodsByUserId(req.session.user._id)
+      .then(
+          (models) => {
+            if (models !== null && models.length > 0) {
+              return res.send(new ResponseUtil({result: models}, null));
+            } else {
+              return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+            }
+          }
+      ).catch((e) => {
+        return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+      })
+    }
   });
-//   app.post("/api/user/SignIn", new LoginCheck().ifLoginReturn,
-//   (req, res) => {
-//       let user = req.body;
-//       let userModel = new UserModel();
-//       userModel.findUserByName(user.userName)
-//           .then(
-//               (models) => {
-//                   if (models !== null && models.length > 0) {
-//                       let model = models[0];
-//                       if (models[0].passWord === user.passWord) {
-//                           req.session.user = model;
-//                           req.session.user.passWord = null;
-//                           return res.send(new ResponseUtil({redirect: "/"}, null));
-//                       } else {
-//                           return res.send(new ResponseUtil(null, {errorMsg: "用户名或密码错误", errorType: 2}));
-//                       }
-//                   } else {
-//                       return res.send(new ResponseUtil(null, {errorMsg: "没有此用户", errorType: 1}));
-//                   }
-//               }
-//           ).catch((e) => {
-//           return res.send(new ResponseUtil(null, {errorMsg: "没有此用户", errorType: 1}));
-//       });
-//   }
-// );
+  app.get('/api/goods/getGoodsById/:goodsId', (req, res) => {
+      let goodsModel = new GoodsModel();
+      goodsModel.findGoodsById(req.params.goodsId)
+      .then(
+          (models) => {
+            if (models !== null && models.length > 0) {
+              return res.send(new ResponseUtil({result: models}, null));
+            } else {
+              return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+            }
+          }
+      ).catch((e) => {
+        return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+      })
+  });
   app.post("/api/goods/AddGoods",(req, res) => {
         let goods = req.body;
         console.log('ewew');

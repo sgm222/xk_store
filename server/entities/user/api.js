@@ -9,8 +9,11 @@ const UserModel = require('./model');
 let storage = multer.diskStorage({
     destination: './public/build/uploadFiles/',
     filename: function (req, file, cb) {
-        console.log("fileName=" + file.originalname);
-        fileName = Date.now() + '-' + file.originalname;
+        if(file) {
+            fileName = Date.now() + '-' + file.originalname;
+        } else {
+            fileName = "find_user.png";
+        }
         cb(null, fileName);
     }
 });
@@ -31,13 +34,27 @@ const userAPI = (app) => {
                     user: req.session.user,
             }, null));
     });
-
+    app.get('/api/user/getVip', (req, res) => {
+        let userModel = new UserModel();
+        userModel.findUserByType("0")
+        .then(
+            (models) => {
+                if (models !== null && models.length > 0) {
+                return res.send(new ResponseUtil({result: models}, null));
+                } else {
+                return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+                }
+            }
+        ).catch((e) => {
+            return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+        })
+    });
     app.post("/api/user/SignUp", new LoginCheck().ifLoginReturn,
         upload.single('avatar'),
         new LoginCheck().userNameHasOccupied,
         (req, res) => {
             let user = req.body;
-            let userModel = new UserModel(user.userName, user.passWord, fileName);
+            let userModel = new UserModel(user.userName, user.passWord, fileName, user.type);
             userModel.createUser().then(
                 (model) => {
                     delete user.passWord;
@@ -61,12 +78,14 @@ const userAPI = (app) => {
                     (models) => {
                         if (models !== null && models.length > 0) {
                             let model = models[0];
-                            if (models[0].passWord === user.passWord) {
+                            if (models[0].passWord !== user.passWord) {
+                                return res.send(new ResponseUtil(null, {errorMsg: "用户名或密码错误", errorType: 2}));
+                            } else if(models[0].type !== user.type){
+                                return res.send(new ResponseUtil(null, {errorMsg: "请选择正确角色", errorType: 2}));
+                            } else {
                                 req.session.user = model;
                                 req.session.user.passWord = null;
                                 return res.send(new ResponseUtil({redirect: "/"}, null));
-                            } else {
-                                return res.send(new ResponseUtil(null, {errorMsg: "用户名或密码错误", errorType: 2}));
                             }
                         } else {
                             return res.send(new ResponseUtil(null, {errorMsg: "没有此用户", errorType: 1}));

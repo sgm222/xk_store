@@ -4,19 +4,16 @@ import thunk from 'redux-thunk';
 
 import { userReducer } from '../Views/SignIn/reducers';
 import { feedReducer } from '../Views/Home/reducers';
-import { singleDiscussionReducer } from '../Views/SingleDiscussion/reducers';
-import { newDiscussionReducer } from '../Views/NewDiscussion/reducers';
-import { adminInfoReducer } from '../Views/AdminDashboard/reducers';
 import { goodsReducer } from '../Views/Goods/reducers';
-
+import { vipsReducer } from '../Views/VIPAdmin/reducers';
+import { goodsDetailReducer } from '../Views/Goods/detailreducers';
 // root reducer for app
 const rootReducer = combineReducers({
   user: userReducer,
   feed: feedReducer,
-  discussion: singleDiscussionReducer,
-  newDiscussion: newDiscussionReducer,
-  adminInfo: adminInfoReducer,
   goods: goodsReducer,
+  vips: vipsReducer,
+  goodsDetail: goodsDetailReducer
 });
 
 // dev tool extension

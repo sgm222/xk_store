@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {RadioGroup, Radio} from 'react-radio-group';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import TextField from "material-ui/TextField"
 import Card from "material-ui/Card"
@@ -15,6 +16,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 let userNameTF;
 let passTF;
+let typeTF;
 class SignIn extends Component {
     constructor(props) {
         super(props);
@@ -22,15 +24,21 @@ class SignIn extends Component {
             nameError: "",
             passError: "",
             error: "",
+            selectedValue: "1"
         }
     }
+    handleChange(event) { 
+        this.setState({selectedValue:event});
+    } 
     componentDidMount() {
         userNameTF = this.refs.userNameTF;
         passTF = this.refs.passTF;
+        typeTF = this.refs.typeTF;
     }
     onSignIn() {
         let userNameStr = userNameTF.getValue();
         let passStr = passTF.getValue();
+        let typeStr = typeTF.props.selectedValue;
         let infoFinished = true;
         if ("" === userNameStr) {
             this.setState({
@@ -51,6 +59,7 @@ class SignIn extends Component {
         let body = {
             "userName": userNameStr,
             "passWord": passStr,
+            "type": typeStr
         };
         let url = "/api/user/SignIn";
         fetch(url, {
@@ -140,10 +149,20 @@ class SignIn extends Component {
                                             ref="passTF"
                                             id="passTF"
                                             name="passTF"/>
-                                    <span>{this.state.error}</span>
+                                    <RadioGroup name="typeTF" 
+                                                ref="typeTF"
+                                                selectedValue={this.state.selectedValue} 
+                                                onChange={(event)=>{this.handleChange(event)}}> 
+                                        <Radio value="1" />卖家
+                                        <Radio value="2" style={{marginLeft: "20px"}}style={{marginLeft: "20px"}}/>管理员
+                                    </RadioGroup>
+                                    <span style={{
+                                        marginTop:"10px",
+                                        color:"red"
+                                    }}>{this.state.error}</span>
                                     <Button onClick={() => this.onSignIn()}
                                                 primary={true}
-                                                style={{width: "256px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                                                style={{width: "256px", marginTop:"10px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                                     >登录</Button>
                                 </div>
                             </Card>
