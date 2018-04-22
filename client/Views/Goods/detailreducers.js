@@ -21,7 +21,7 @@ import {
       case FETCHING_GOODSDETAIL_FAILURE:
         return Object.assign({}, state, {
           fetchingGoods: false,
-          error: 'Unable to fetch user profile. Please check out for correct username.',
+          error: 'Unable to fetch goods',
         });
   
       default:

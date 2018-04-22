@@ -26,13 +26,6 @@ class Profile extends Component {
   }
 }
 
-Profile.defaultProps = {
-  name: 'Hello World',
-  gitHandler: 'helloWorld',
-  location: 'Somewhere in the world',
-  avatarUrl: 'https://google.com',
-};
-
 Profile.propTypes = {
   name: React.PropTypes.string,
   gitHandler: React.PropTypes.string,

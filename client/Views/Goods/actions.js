@@ -28,22 +28,26 @@ export const getGoods = () => {
     )
   }
 };
-export const getGoodsById = (goodsId) => {
+export const getGoodsById = (goodsId = '') => {
     return (dispatch, getState) => {
-      fetchGoodsById(goodsId).then(
-          (response) => {
-              return response.data;
-          }
-      ).then(
-          (json) => {
-              if (json.length !== 0) {
-                dispatch({ type: FETCHING_GOODSDETAIL_SUCCESS, payload: json });
-              } else {
-                dispatch({ type: FETCHING_GOODSDETAIL_FAILURE});
-              }
-          }
-      ).catch(
-        //dispatch({ type: FETCHING_USER_FAILURE })
-      )
+      if(goodsId === '') {
+        dispatch({ type: FETCHING_GOODSDETAIL_FAILURE});
+      } else {
+        fetchGoodsById(goodsId).then(
+            (response) => {
+                return response.data;
+            }
+        ).then(
+            (json) => {
+                if (json.length !== 0) {
+                  dispatch({ type: FETCHING_GOODSDETAIL_SUCCESS, payload: json });
+                } else {
+                  dispatch({ type: FETCHING_GOODSDETAIL_FAILURE});
+                }
+            }
+        ).catch(
+          dispatch({ type: FETCHING_GOODSDETAIL_FAILURE})
+        )
+      }
     }
 };

@@ -49,8 +49,6 @@ const goodsAPI = (app) => {
   });
   app.post("/api/goods/AddGoods",(req, res) => {
         let goods = req.body;
-        console.log('ewew');
-        console.log(goods);
         let goodsModel = new GoodsModel(
           req.session.user._id,
           goods.name,
@@ -68,8 +66,31 @@ const goodsAPI = (app) => {
         ).catch((e) => {
             console.error(e);
         });
-    }
-  );
+  });
+  app.post("/api/goods/ModifyGoods/:goodsId",(req, res) => {
+    let goodsModel = new GoodsModel();
+    goodsModel.findGoodsAndUpdate(req.params.goodsId, req.body)
+    .then(
+        (model) => {
+          if (model !== null) {
+            return res.send(new ResponseUtil({redirect: "/Goods"}, null));
+          } else {
+            return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+          }
+        }
+    ).catch((e) => {
+      return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+    })
+  });
+  app.post("/api/goods/DeleteGoods",(req, res) => {
+    let goodsModel = new GoodsModel();
+    goodsModel.delteGoods(req.body._id)
+    .then(() => {
+      return res.send(new ResponseUtil({redirect: "/Goods"}, null));
+    }).catch((e) => {
+      return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+    })
+  });
 };
 
 module.exports = goodsAPI;

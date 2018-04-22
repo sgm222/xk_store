@@ -5,7 +5,7 @@ let MongoUtil = require("../lib/MongoUtil");
 let goodsSechma = {
   userId: String,
   name: String,
-  type: Number,
+  type: String ,
   price: String,
   weight: String,
   salecount: Number,
@@ -25,15 +25,15 @@ class GoodsModel {
       this.direction = direction;
     }
 
-    setGoods(userId, name, type, price, weight, salecount, count, direction) {
-      this.userId = userId;
-      this.name = name;
-      this.type = type;
-      this.price = price;
-      this.weight = weight;
-      this.salecount = salecount;
-      this.count = count;
-      this.direction = direction;
+    setGoods(model) {
+      this.userId = model.userId;
+      this.name = model.name;
+      this.type = model.type;
+      this.price = model.price;
+      this.weight = model.weight;
+      this.salecount = model.salecount;
+      this.count = model.count;
+      this.direction = model.direction;
     }
 
     createGoods() {
@@ -65,6 +65,14 @@ class GoodsModel {
     findUserByType(type) {
         let mongoUtil = new MongoUtil();
         return mongoUtil.findModelByKeyMap(modelName, goodsSechma, {type, type});
+    }
+    findGoodsAndUpdate(id, data) {
+      let mongoUtil = new MongoUtil();
+      return mongoUtil.findModelAndUpdateByKeyMap(modelName, goodsSechma, id, data);
+    }
+    delteGoods(id) {
+      let mongoUtil = new MongoUtil();
+      return mongoUtil.deleteModel(modelName, goodsSechma, id);
     }
 }
 

@@ -7,35 +7,40 @@ import Avatar from "material-ui/Avatar";
 import SelectField from 'material-ui/SelectField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MenuItem from 'material-ui/MenuItem';
+import Dialog from 'material-ui/Dialog';
 import bigg from 'SharedStyles/bigg.jpg';
 import Button from 'Components/Button';
+import { DialogAlert } from 'Components/DialogAlert/index';
 import { Link } from 'react-router';
-import { getGoodsById } from './actions';
+import { fetchGoodsById } from './api';
+// import { getGoodsById } from './actions';
 let nameTF, typeTF, priceTF, weightTF, salecountTF, countTF, directionTF;
 class AddGoods extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             add: true,
-            type: 1,
+            fetchingGoods: false,
+            open: false,
+            failureOpen: false,
+            type: "水果",
             nameError: "",
             priceError: "",
             weightError: "",
             salecounteError: "",
             countError: "",
-            directioError: "",
-            error: ""
+            directionError: "",
+            error: "",
+            _id: "",
+            name: "",
+            price: "",
+            weight: "",
+            salecount: "",
+            count: "",
+            direction: ""
         }
     }
     componentDidMount() {
-        const { goodsId } = this.props.params;
-        const { getGoodsById } = this.props;
-        if(goodsId) {
-            this.setState({
-                add: false
-            })
-            getGoodsById(goodsId);
-        }
         nameTF = this.refs.nameTF;
         typeTF = this.refs.typeTF;
         priceTF = this.refs.priceTF;
@@ -44,31 +49,46 @@ class AddGoods extends React.Component {
         countTF = this.refs.countTF;
         directionTF = this.refs.directionTF; 
     }
+    componentWillMount() {
+        const { goodsId } = this.props.params;
+        if(goodsId) {
+            fetchGoodsById(goodsId).then(
+                (response) => {
+                    return response.data;
+                }
+            ).then(
+                (json) => {
+                    let goods = json.result.result[0];
+                    if(goods) {
+                        this.setState({
+                            add: false,
+                            fetchingGoods: true,
+                            _id: goods._id,
+                            name: goods.name,
+                            type: goods.type,
+                            price: goods.price,
+                            weight: goods.weight,
+                            salecount: goods.salecount,
+                            count: goods.count,
+                            direction: goods.direction
+                        })
+                    }
+                }
+            )
+        }
+    }
     handleChange(e) {
         let value = e.target.value;
-        console.log(this);
         this.setState({type: value})
     }
-    genderSelected(event, index, value) {
-        this.setState({
-            selectedGender: value
-        })
-    }
-
-    onUpLoadClick() {
-        console.log("onUpLoadClick=");
-        uploadInput.click();
-    }
-
-    avatarSelected(event) {
-        file = uploadInput.files[0];
-        console.info("file=" + file.name);
-        this.setState({
-            selectedFileName: file.name
-        });
-    }
-    onAdd() {
-        console.log('onadd');
+    handleOpen = () => {
+        this.setState({open: true});
+      };
+    
+    handleClose = () => {
+        this.setState({open: false});
+    };
+    onAdd(goodsId = '') {
         let nameStr = nameTF.getValue();
         let typeStr = typeTF.value;
         let priceStr = priceTF.getValue();
@@ -119,8 +139,7 @@ class AddGoods extends React.Component {
             'count': countStr,
             'direction': directionStr
         }
-        console.log(typeStr);
-        let url = "/api/goods/AddGoods";
+        let url = goodsId === '' ? "/api/goods/AddGoods" : `/api/goods/ModifyGoods/${goodsId}`;
         fetch(url, {
             method: "post",
             body: JSON.stringify(body),
@@ -134,26 +153,34 @@ class AddGoods extends React.Component {
             }
         ).then(
             (json) => {
-                console.log(JSON.stringify(json));
                 if (json.result) {
                     let result=json.result;
                     if (result.redirect) {
-                        window.location = result.redirect;
+                       this.handleOpen();
+                       setTimeout(function() {
+                            window.location.href = result.redirect;
+                       },3000);
                     }
                     else {
-                        this.setState({
-                            error: "添加失败，请重试"
-                        })
+                        this.setState({failureOpen: true})
                     }
                 }
             }
         ).catch(
-            (ex) => {
-                console.error('parsing failed', ex);
-            });
+            this.setState({failureOpen: true})
+        )
     }
 
     render() {
+        if(!this.state.fetchingGoods && !this.state.add) {
+            return(
+                <span style={{
+                    marginLeft:"300px",
+                    marginTop: "50px",
+                    display: "block"
+                }}>Loading~~~~</span>
+            );
+        } else {
         return (
             <MuiThemeProvider>
             <Card style={{
@@ -165,9 +192,11 @@ class AddGoods extends React.Component {
                 <div>商品名称*</div>
                 <TextField style={{ flex: 1,height:"32px",marginBottom:"0.5em"}}
                                        errorText={this.state.nameError}
-                                       disabled={this.state.add}
+                                       disabled={!this.state.add}
+                                       value={this.state.name || ""}
                                        onChange={
                                         (event, str) => {
+                                            this.setState({name: str});
                                             if (this.state.nameError !== "") {
                                                 this.setState({
                                                     nameError: ""
@@ -189,21 +218,23 @@ class AddGoods extends React.Component {
                         onChange={
                             (event, value) => {
                                 this.setState({
-                                    type: value
+                                    type: value,
                                 })
                         }}>
-                      <option value="1">水果</option>
-                      <option value="2">蔬菜</option>
-                      <option value="3">粮油</option>
-                      <option value="4">肉制品</option>
-                      <option value="5">天然干货</option>
-                      <option value="6">茶</option>
+                      <option value="水果">水果</option>
+                      <option value="蔬菜">蔬菜</option>
+                      <option value="粮油">粮油</option>
+                      <option value="肉制品">肉制品</option>
+                      <option value="天然干货">天然干货</option>
+                      <option value="茶">茶</option>
                 </select>
                 <div>价格*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.priceError}
+                            value={this.state.price || ""}
                             onChange={
                                 (event, str) => {
+                                    this.setState({price: str});
                                     if (this.state.priceError !== "") {
                                         this.setState({
                                             priceError: ""
@@ -216,9 +247,11 @@ class AddGoods extends React.Component {
                 <div>净重*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.weightError}
+                            value={this.state.weight || ""}
                             onChange={
                                 (event, str) => {
-                                    if (this.state.weightError !== "") {
+                                    this.setState({weight: str});
+                                    if (this.state.weightError) {
                                         this.setState({
                                             weightError: ""
                                         })
@@ -230,8 +263,10 @@ class AddGoods extends React.Component {
                 <div>销量*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.salecountError}
+                            value={this.state.salecount || ""}
                             onChange={
                                 (event, str) => {
+                                    this.setState({salecount: str});
                                     if (this.state.salecountError !== "") {
                                         this.setState({
                                             salecountError: ""
@@ -244,8 +279,10 @@ class AddGoods extends React.Component {
                 <div>库存*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.countError}
+                            value={this.state.count || ""}
                             onChange={
                                 (event, str) => {
+                                    this.setState({count: str});
                                     if (this.state.countError !== "") {
                                         this.setState({
                                             countError: ""
@@ -258,8 +295,10 @@ class AddGoods extends React.Component {
                 <div>详情</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.directionError}
+                            value={this.state.direction || ""}
                             onChange={
                                 (event, str) => {
+                                    this.setState({direction: str});
                                     if (this.state.directionError !== "") {
                                         this.setState({
                                             directionError: ""
@@ -273,7 +312,7 @@ class AddGoods extends React.Component {
                                           primary={true}
                                           style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 >添加</Button>}
-                {!this.state.add && <Button onClick={() => this.onAdd()}
+                {!this.state.add && <Button onClick={() => this.onAdd(this.state._id)}
                                           primary={true}
                                           style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 >修改</Button>}
@@ -281,9 +320,22 @@ class AddGoods extends React.Component {
                         primary={true}
                         style={{width: "120px", marginLeft:"20px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 ><Link to="/Goods" style={{color:"#fff"}}>返回</Link></Button>      
+                 <Dialog
+                    modal={false}
+                    open={this.state.open}
+                    >
+                    {this.state.add ? '添加成功' : '修改成功'}
+                </Dialog>
+                <Dialog
+                    modal={false}
+                    open={this.state.failureOpen}
+                    >
+                    {this.state.add ? '添加失败' : '修改失败'}
+                </Dialog>
             </Card>
             </MuiThemeProvider>
         );
+    }
     }
 }
 export default connect(
@@ -291,6 +343,6 @@ export default connect(
         goodsDetail: state.goodsDetail,
     }; },
     (dispatch) => { return {
-        getGoodsById: (goodsId) => { dispatch(getGoodsById(goodsId)); },
+        fetchGoodsById: (goodsId) => { dispatch(fetchGoodsById(goodsId)); },
     }; }
 )(AddGoods);

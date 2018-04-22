@@ -92,6 +92,26 @@ class MongoUtil {
         return Model.find(keymap);
         // return model.save();   //promise 返回model
     }
-}
+    findModelAndUpdateByKeyMap(modelName, schema, id, data) {
+        let modelSchema = mongoose.Schema(schema);
+        let Model;
+        try {
+            Model = mongoose.model(modelName);                //判断Model是不是已存在
+        } catch (error) {
+            Model = mongoose.model(modelName, modelSchema);
+        }
+        return Model.findOneAndUpdate({_id: id}, {$set:data});
+    }
+    deleteModel(modelName, schema, id) {
+        let modelSchema = mongoose.Schema(schema);
+        let Model;
+        try {
+            Model = mongoose.model(modelName);                //判断Model是不是已存在
+        } catch (error) {
+            Model = mongoose.model(modelName, modelSchema);
+        }
+        return Model.remove({_id: id});
+    }
+};
 
 module.exports = MongoUtil;

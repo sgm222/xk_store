@@ -5,15 +5,81 @@ import appLayout from 'SharedStyles/appLayout.css';
 import styles from './styles.css';
 import { Link } from 'react-router';
 import { getGoods } from './actions';
-
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import Dialog from 'material-ui/Dialog';
+import FlatButton from 'material-ui/FlatButton';
 class Goods extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        open: false,
+        successOpen: false,
+        failureOpen: false,
+        _id: ""
+    }
+  }
   componentDidMount() {
     const { getGoods } = this.props;
     getGoods();
   }
-
+  handleOpen = (_id) => {
+    this.setState({
+      open: true,
+      _id: _id
+    });
+  };
+  OnDelete = () => {
+    this.setState({open: false});
+    let url = "/api/goods/DeleteGoods";
+    let body = {
+      _id: this.state._id
+    };
+    fetch(url, {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'     //很重要，设置session,cookie可用
+    }).then(
+        (response) => {
+            return response.json();
+        }
+    ).then(
+        (json) => {
+            if (json.result) {
+                let result=json.result;
+                if (result.redirect) {
+                  this.setState({successOpen: true,});
+                  setTimeout(function() {
+                        window.location.href = result.redirect;
+                  },3000);
+                }
+                else {
+                  this.setState({failureOpen: true,});
+                }
+            }
+        }
+    ).catch(
+        (ex) => {
+          this.setState({failureOpen: true,});
+        });
+  }
   render() {
     const { goods } = this.props;
+    const actions = [
+      <FlatButton
+        label="取消"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="确定"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.OnDelete}
+      />,
+    ];
     if (goods.fetchingGoods) {
           let data = goods.goods;
           return (
@@ -47,7 +113,7 @@ class Goods extends Component {
                         <td>{item.count}</td>
                         <td>{item.direction}</td>
                         <td>
-                          <Link >删除</Link>
+                          <Link onClick={(id) => this.handleOpen(item._id)}>删除</Link>
                           <Link to={`/AddGoods/${item._id}`} style={{marginLeft:'10px'}}>编辑</Link>
                         </td>
                     </tr>
@@ -56,6 +122,31 @@ class Goods extends Component {
                 }
               </table>
             }
+            <MuiThemeProvider>
+              <Dialog
+                actions={actions}
+                modal={false}
+                open={this.state.open}
+                >
+                确定删除吗？
+              </Dialog>
+            </MuiThemeProvider>
+            <MuiThemeProvider>
+              <Dialog
+                modal={false}
+                open={this.state.successOpen}
+                >
+                删除成功
+              </Dialog>
+            </MuiThemeProvider>
+            <MuiThemeProvider>
+              <Dialog
+                modal={false}
+                open={this.state.failureOpen}
+                >
+                删除失败
+              </Dialog>
+            </MuiThemeProvider>
             </div>
           );
     }
@@ -71,6 +162,6 @@ export default connect(
     goods: state.goods,
   }; },
   (dispatch) => { return {
-    getGoods: (userId) => { dispatch(getGoods(userId)); },
+    getGoods: () => { dispatch(getGoods()); },
   }; }
 )(Goods);
