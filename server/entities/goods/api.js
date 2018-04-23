@@ -1,6 +1,21 @@
 const GoodsModel = require('./model');
 const {getGoods, getGoodsById} = require('./controller');
 const ResponseUtil = require('../lib/ResponseUtil');
+const multer = require('multer');
+let fileName;
+let storage = multer.diskStorage({
+  destination: './public/build/uploadFiles/',
+  filename: function (req, file, cb) {
+      if(file) {
+          fileName = Date.now() + '-' + file.originalname;
+      } else {
+          fileName = "";
+      }
+      cb(null, fileName);
+  }
+});
+let upload = multer({storage: storage});
+
 const goodsAPI = (app) => {
   app.get('/api/goods', (req, res) => {
     let goodsModel = new GoodsModel();
@@ -47,7 +62,7 @@ const goodsAPI = (app) => {
         return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
       })
   });
-  app.post("/api/goods/AddGoods",(req, res) => {
+  app.post("/api/goods/AddGoods", upload.single('avatar'), (req, res) => {
         let goods = req.body;
         let goodsModel = new GoodsModel(
           req.session.user._id,
@@ -57,7 +72,8 @@ const goodsAPI = (app) => {
           goods.weight,
           goods.salecount,
           goods.count,
-          goods.direction
+          goods.direction,
+          fileName
         );
         goodsModel.createGoods().then(
             (model) => {
@@ -67,9 +83,19 @@ const goodsAPI = (app) => {
             console.error(e);
         });
   });
-  app.post("/api/goods/ModifyGoods/:goodsId",(req, res) => {
+  app.post("/api/goods/ModifyGoods/:goodsId", upload.single('avatar'), (req, res) => {
     let goodsModel = new GoodsModel();
-    goodsModel.findGoodsAndUpdate(req.params.goodsId, req.body)
+    let data = {
+      name: req.body.name,
+      type: req.body.type,
+      price: req.body.price,
+      weight: req.body.weight,
+      salecount: req.body.salecount,
+      count: req.body.count,
+      direction: req.body.direction,
+      fileName: fileName ? fileName : req.body.fileName
+    }
+    goodsModel.findGoodsAndUpdate(req.params.goodsId, data)
     .then(
         (model) => {
           if (model !== null) {

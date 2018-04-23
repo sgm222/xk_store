@@ -13,8 +13,8 @@ import Button from 'Components/Button';
 import { DialogAlert } from 'Components/DialogAlert/index';
 import { Link } from 'react-router';
 import { fetchGoodsById } from './api';
-// import { getGoodsById } from './actions';
-let nameTF, typeTF, priceTF, weightTF, salecountTF, countTF, directionTF;
+
+let nameTF, typeTF, priceTF, weightTF, salecountTF, countTF, directionTF, uploadInput, file;
 class AddGoods extends React.Component {
     constructor(props) {
         super(props);
@@ -23,6 +23,7 @@ class AddGoods extends React.Component {
             fetchingGoods: false,
             open: false,
             failureOpen: false,
+            selectedFileName: "",
             type: "水果",
             nameError: "",
             priceError: "",
@@ -41,6 +42,7 @@ class AddGoods extends React.Component {
         }
     }
     componentDidMount() {
+        uploadInput = this.refs.uploadInput;
         nameTF = this.refs.nameTF;
         typeTF = this.refs.typeTF;
         priceTF = this.refs.priceTF;
@@ -70,24 +72,28 @@ class AddGoods extends React.Component {
                             weight: goods.weight,
                             salecount: goods.salecount,
                             count: goods.count,
-                            direction: goods.direction
+                            direction: goods.direction,
+                            selectedFileName: goods.fileName
                         })
                     }
                 }
             )
         }
     }
+    onUpLoadClick() {
+        uploadInput.click();
+    }
+
+    avatarSelected(event) {
+        file = uploadInput.files[0];
+        this.setState({
+            selectedFileName: file.name
+        });
+    }
     handleChange(e) {
         let value = e.target.value;
         this.setState({type: value})
     }
-    handleOpen = () => {
-        this.setState({open: true});
-      };
-    
-    handleClose = () => {
-        this.setState({open: false});
-    };
     onAdd(goodsId = '') {
         let nameStr = nameTF.getValue();
         let typeStr = typeTF.value;
@@ -130,23 +136,22 @@ class AddGoods extends React.Component {
         if (!infoFinished) {
             return;
         }
-        let body = {
-            'name': nameStr,
-            'type': typeStr,
-            'price': priceStr,
-            'weight': weightStr,
-            'salecount': salecountStr,
-            'count': countStr,
-            'direction': directionStr
-        }
+        console.log(this.state.selectedFileName);
+        let formData = new FormData();
+        formData.append('avatar', file);
+        formData.append('name', nameStr);
+        formData.append('type', typeStr);
+        formData.append('price', priceStr);
+        formData.append('weight', weightStr);
+        formData.append('salecount', salecountStr);
+        formData.append('count', countStr);
+        formData.append('direction', directionStr);
+        formData.append('fileName', this.state.selectedFileName);
         let url = goodsId === '' ? "/api/goods/AddGoods" : `/api/goods/ModifyGoods/${goodsId}`;
         fetch(url, {
             method: "post",
-            body: JSON.stringify(body),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            credentials: 'include'     //很重要，设置session,cookie可用
+            body: formData,
+            credentials: 'include'     
         }).then(
             (response) => {
                 return response.json();
@@ -156,10 +161,10 @@ class AddGoods extends React.Component {
                 if (json.result) {
                     let result=json.result;
                     if (result.redirect) {
-                       this.handleOpen();
-                       setTimeout(function() {
+                        this.setState({open: true});
+                        setTimeout(function() {
                             window.location.href = result.redirect;
-                       },3000);
+                        },2000);
                     }
                     else {
                         this.setState({failureOpen: true})
@@ -167,7 +172,7 @@ class AddGoods extends React.Component {
                 }
             }
         ).catch(
-            this.setState({failureOpen: true})
+           console.error('error')
         )
     }
 
@@ -307,7 +312,25 @@ class AddGoods extends React.Component {
                             }}
                             ref="directionTF"
                             id="directionTF"
-                            name="directionTF"/>  
+                            name="directionTF"/> 
+                 <div style={{flex: 1,height:"32px",marginBottom:"10px",marginTop:"10px"}}>
+                                <span>图片</span>
+                                <Button onClick={() => this.onUpLoadClick()}
+                                              style={{backgroundColor:"#eee"}}
+                                              secondary={true}
+                                              style={{marginLeft: "0.5em",backgroundColor:"#ddd"}}
+                                >选择文件</Button>
+                            </div>
+                            <div style={{flex: 1,height:"20px"}}>
+                                {this.state.selectedFileName}
+                            </div>
+                            <input type="file"
+                                   multiple="multiple"
+                                   accept="image/*"
+                                   ref="uploadInput"
+                                   name="uploadInput"
+                                   style={{display: "none"}}
+                                   onChange={(event) => this.avatarSelected(event)}/> 
                 {this.state.add && <Button onClick={() => this.onAdd()}
                                           primary={true}
                                           style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}

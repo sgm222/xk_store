@@ -93,6 +93,7 @@ class Goods extends Component {
                 <thead>
                   <tr>
                     <th>名称</th>
+                    <th>图片</th>
                     <th>种类</th>
                     <th>价格</th>
                     <th>净重</th>
@@ -106,6 +107,10 @@ class Goods extends Component {
                   <tbody>
                     <tr key={idx}>
                         <td>{item.name}</td>
+                        <td><img src={"/build/uploadFiles/" + item.fileName} style={{
+                          width:'30px',
+                          height:'30px'
+                        }}/></td>
                         <td>{item.type}</td>
                         <td>{item.price}</td>
                         <td>{item.weight}</td>

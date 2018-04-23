@@ -3,19 +3,20 @@
  */
 let MongoUtil = require("../lib/MongoUtil");
 let goodsSechma = {
-  userId: String,
+  shopId: String,
   name: String,
   type: String ,
   price: String,
   weight: String,
   salecount: Number,
   count: Number,
-  direction: String
+  direction: String,
+  fileName: String
 };
 let modelName = "goods";
 class GoodsModel {
-    constructor(userId, name, type, price, weight, salecount, count, direction) {
-      this.userId = userId;
+    constructor(shopId, name, type, price, weight, salecount, count, direction, fileName) {
+      this.shopId = shopId;
       this.name = name;
       this.type = type;
       this.price = price;
@@ -23,10 +24,11 @@ class GoodsModel {
       this.salecount = salecount;
       this.count = count;
       this.direction = direction;
+      this.fileName = fileName;
     }
 
     setGoods(model) {
-      this.userId = model.userId;
+      this.shopId = model.shopId;
       this.name = model.name;
       this.type = model.type;
       this.price = model.price;
@@ -34,18 +36,20 @@ class GoodsModel {
       this.salecount = model.salecount;
       this.count = model.count;
       this.direction = model.direction;
+      this.fileName = model.fileName;
     }
 
     createGoods() {
         let goodsValue = {
-          userId: this.userId,
+          shopId: this.shopId,
           name: this.name,
           type: this.type,
           price:this.price ,
           weight:this.weight,
           salecount:this.salecount,
           count:this.count,
-          direction:this.direction
+          direction:this.direction,
+          fileName:this.fileName
         };
         let mongoUtil = new MongoUtil();
         return mongoUtil.createModel(modelName, goodsSechma, goodsValue);
@@ -54,9 +58,9 @@ class GoodsModel {
       let mongoUtil = new MongoUtil();
       return mongoUtil.findModelByKeyMap(modelName, goodsSechma);
     }
-    findGoodsByUserId(userId) {
+    findGoodsByUserId(shopId) {
         let mongoUtil = new MongoUtil();
-        return mongoUtil.findModelByKeyMap(modelName, goodsSechma, {userId, userId});
+        return mongoUtil.findModelByKeyMap(modelName, goodsSechma, {shopId, shopId});
     }
     findGoodsById(_id) {
       let mongoUtil = new MongoUtil();
