@@ -1,7 +1,3 @@
-/**
- * user profile apis
- */
-
 import axios from 'axios';
 
 export const fetchVIP = () => {

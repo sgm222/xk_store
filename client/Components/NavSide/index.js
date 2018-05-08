@@ -18,12 +18,14 @@ class NavSide extends Component {
 
 	render() {
         const props = this.props.user;
+        const { shop } = this.props;
 		const Item = Menu.Item,
 			SubMenu = Menu.SubMenu,
             MenuItemGroup = Menu.ItemGroup;
         if(props.fetchingUser) {
 		return (
 			<nav className="navbar-default navbar-side" role="navigation">
+            <a className="navbar-brand" style={{height:'60px',color:'#fff',lineHeight:'30px',fontSize:'20px'}} href="">小康电子商城管理系统</a> 
             <div className="sidebar-collapse">
                 {this.props.user.type === '1' && 
                     <ul className="nav">
@@ -32,17 +34,24 @@ class NavSide extends Component {
                             <span className='user-span'>{this.props.user.userName}</span>
                         </li>
                         <li>
-                            <Link  to=""><i className="fa fa-dashboard fa-3x"></i>我的店铺</Link>
+                            <Link  to="/Shop"><i className="fa fa-dashboard fa-3x"></i>我的店铺</Link>
                         </li>
-                        <li>
-                            <Link  to="/Goods"><i className="fa fa-desktop fa-3x"></i>商品管理</Link>
-                        </li>
-                        <li>
-                            <Link  to="/Goods"><i className="fa fa-desktop fa-3x"></i>订单管理</Link>
-                        </li>
-                        <li>
-                            <Link  to="/Goods"><i className="fa fa-desktop fa-3x"></i>数据统计</Link>
-                        </li>
+                        {shop.fetchingShop && shop.shop.result && shop.shop.result.result[0].status === 2 && 
+                            <li>
+                                <Link  to="/Goods"><i className="fa fa-desktop fa-3x"></i>商品管理</Link>
+                            </li>
+                        }
+                        {shop.fetchingShop && shop.shop.result && shop.shop.result.result[0].status === 2 &&
+                            <li>
+                                <Link  to="/Order"><i className="fa fa-desktop fa-3x"></i>订单管理</Link>
+                            </li>
+                        }
+                        {shop.fetchingShop && shop.shop.result && shop.shop.result.result[0].status === 2 &&
+                            <li>
+                                <Link  to="/SellerDA"><i className="fa fa-desktop fa-3x"></i>数据统计</Link>
+                            </li>
+                        }
+                    
                     </ul>                    	
                 }
                 {this.props.user.type === '2' && 
@@ -55,19 +64,19 @@ class NavSide extends Component {
                             <Link  to="/Goods"><i className="fa fa-dashboard fa-3x"></i>商品管理</Link>
                         </li>
                         <li>
-                            <Link  to="/Users"><i className="fa fa-desktop fa-3x"></i>商户管理</Link>
+                            <Link  to="/Seller"><i className="fa fa-desktop fa-3x"></i>商户管理</Link>
                         </li>
                         <li>
-                            <Link  to="/VipAdmin"><i className="fa fa-desktop fa-3x"></i>会员管理</Link>
+                            <Link  to="/Vip"><i className="fa fa-desktop fa-3x"></i>会员管理</Link>
                         </li>
                         <li>
-                            <Link  to="/Users"><i className="fa fa-desktop fa-3x"></i>店铺管理</Link>
+                            <Link  to="/Shop"><i className="fa fa-desktop fa-3x"></i>店铺管理</Link>
                         </li>
                         <li>
-                            <Link  to="/Users"><i className="fa fa-desktop fa-3x"></i>订单管理</Link>
+                            <Link  to="/Order"><i className="fa fa-desktop fa-3x"></i>订单管理</Link>
                         </li>
                         <li>
-                            <Link  to="/Users"><i className="fa fa-desktop fa-3x"></i>数据统计</Link>
+                            <Link  to="/DA"><i className="fa fa-desktop fa-3x"></i>数据统计</Link>
                         </li>
                     </ul>                    	
                 } 
@@ -82,5 +91,6 @@ class NavSide extends Component {
 export default connect(
     (state) => { return {
         user: state.user,
+        shop: state.shop
       }; },
 )(NavSide);

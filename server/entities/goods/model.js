@@ -11,11 +11,13 @@ let goodsSechma = {
   salecount: Number,
   count: Number,
   direction: String,
-  fileName: String
+  fileName: String,
+  status: Number,
+  statusError: String,
 };
 let modelName = "goods";
 class GoodsModel {
-    constructor(shopId, name, type, price, weight, salecount, count, direction, fileName) {
+    constructor(shopId, name, type, price, weight, salecount, count, direction, fileName, status, statusError) {
       this.shopId = shopId;
       this.name = name;
       this.type = type;
@@ -25,18 +27,8 @@ class GoodsModel {
       this.count = count;
       this.direction = direction;
       this.fileName = fileName;
-    }
-
-    setGoods(model) {
-      this.shopId = model.shopId;
-      this.name = model.name;
-      this.type = model.type;
-      this.price = model.price;
-      this.weight = model.weight;
-      this.salecount = model.salecount;
-      this.count = model.count;
-      this.direction = model.direction;
-      this.fileName = model.fileName;
+      this.status = status;
+      this.statusError = statusError;
     }
 
     createGoods() {
@@ -49,7 +41,9 @@ class GoodsModel {
           salecount:this.salecount,
           count:this.count,
           direction:this.direction,
-          fileName:this.fileName
+          fileName:this.fileName,
+          status:this.status,
+          statusError:this.statusError
         };
         let mongoUtil = new MongoUtil();
         return mongoUtil.createModel(modelName, goodsSechma, goodsValue);
@@ -77,6 +71,10 @@ class GoodsModel {
     delteGoods(id) {
       let mongoUtil = new MongoUtil();
       return mongoUtil.deleteModel(modelName, goodsSechma, id);
+    }
+    delteGoodsByShopId(id) {
+      let mongoUtil = new MongoUtil();
+      return mongoUtil.deleteModelByKeyMap(modelName, goodsSechma, {shopId: id});
     }
 }
 

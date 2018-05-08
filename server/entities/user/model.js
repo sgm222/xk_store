@@ -46,6 +46,10 @@ class UserModel {
         let mongoUtil = new MongoUtil();
         return mongoUtil.findModelByKeyMap(modelName, userSechma, {type, type});
     }
+    deleteUser(id) {
+        let mongoUtil = new MongoUtil();
+        return mongoUtil.deleteModel(modelName, userSechma, id);
+    }
 }
 
 module.exports = UserModel;

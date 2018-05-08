@@ -36,9 +36,26 @@ const userAPI = (app) => {
     });
     app.get('/api/user/getVip', (req, res) => {
         let userModel = new UserModel();
-        userModel.findUserByType("0")
+        userModel.findUserByType('0')
         .then(
             (models) => {
+                console.log(models);
+                if (models !== null && models.length > 0) {
+                return res.send(new ResponseUtil({result: models}, null));
+                } else {
+                return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+                }
+            }
+        ).catch((e) => {
+            return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+        })
+    });
+    app.get('/api/user/getSeller', (req, res) => {
+        let userModel = new UserModel();
+        userModel.findUserByType('1')
+        .then(
+            (models) => {
+                console.log(models);
                 if (models !== null && models.length > 0) {
                 return res.send(new ResponseUtil({result: models}, null));
                 } else {
@@ -96,6 +113,24 @@ const userAPI = (app) => {
             });
         }
     );
+    app.post("/api/user/delSeller",(req, res) => {
+        let userModel = new UserModel();
+        userModel.deleteUser(req.body.userId)
+        .then(() => {
+        return res.send(new ResponseUtil({success: true}, null));
+        }).catch((e) => {
+        return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+        })
+    });
+    app.post("/api/user/delUser",(req, res) => {
+        let userModel = new UserModel();
+        userModel.deleteUser(req.body.userId)
+        .then(() => {
+        return res.send(new ResponseUtil({redirect: "/Vip"}, null));
+        }).catch((e) => {
+        return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+        })
+    });
 
     app.post("/api/user/SignOut", (req, res) => {
         req.session.user = null;

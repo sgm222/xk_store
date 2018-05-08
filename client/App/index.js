@@ -14,7 +14,13 @@ import SignUp from '../Views/SignUp';
 import Home from '../Views/Home';
 import Goods from '../Views/Goods';
 import AddGoods from '../Views/Goods/addgoods';
-import Vips from '../Views/VIPAdmin';
+import VIPAdmin from '../Views/VIPAdmin';
+import Seller from '../Views/SellerAdmin';
+import CreateShop from '../Views/MyShop/createshop';
+import Shop from '../Views/MyShop';
+import OrderAdmin from '../Views/OrderAdmin';
+import DA from '../Views/DA';
+import SellerDA from '../Views/DA/sellerIndex';
 ReactDOM.render (
   <Provider store={appStore}>
     <Router history={browserHistory}>
@@ -23,8 +29,15 @@ ReactDOM.render (
             <Route path="SignIn" component={SignIn}/>
             <Route path="Goods" component={Goods}/>
             <Route path="AddGoods" component={AddGoods}/>
-            <Route path="VipAdmin" component={Vips}/>
+            <Route path="Vip" component={VIPAdmin}/>
             <Route path="AddGoods/:goodsId" component={AddGoods}/>
+            <Route path="Seller" component={Seller}/>
+            <Route path="CreateShop" component={CreateShop}/>
+            <Route path="CreateShop/:shopId" component={CreateShop}/>
+            <Route path="Shop" component={Shop}/>
+            <Route path="Order" component={OrderAdmin}/>
+            <Route path="DA" component={DA}/>
+            <Route path="SellerDA" component={SellerDA}/>
         </Route>
     </Router>
   </Provider>,

@@ -70,10 +70,12 @@ const goodsAPI = (app) => {
           goods.type,
           goods.price,
           goods.weight,
-          goods.salecount,
+          0,
           goods.count,
           goods.direction,
-          fileName
+          fileName,
+          0,
+          ''
         );
         goodsModel.createGoods().then(
             (model) => {
@@ -90,7 +92,6 @@ const goodsAPI = (app) => {
       type: req.body.type,
       price: req.body.price,
       weight: req.body.weight,
-      salecount: req.body.salecount,
       count: req.body.count,
       direction: req.body.direction,
       fileName: fileName ? fileName : req.body.fileName
@@ -117,6 +118,52 @@ const goodsAPI = (app) => {
       return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
     })
   });
+  app.post("/api/goods/nopass", (req, res) => {
+    let goodsModel = new GoodsModel();
+    let data = {
+        statusError: req.body.ression,
+        status: 1
+    }
+    goodsModel.findGoodsAndUpdate(req.body.goodsId, data)
+    .then(
+        (model) => {
+        if (model !== null) {
+            return res.send(new ResponseUtil({redirect: "/Goods"}, null));
+        } else {
+            return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+        }
+        }
+    ).catch((e) => {
+    return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+    })
+  });
+  app.post("/api/goods/passGoods/:goodsId", (req, res) => {
+      let goodsModel = new GoodsModel();
+      let data = {
+          status: 2
+      }
+      goodsModel.findGoodsAndUpdate(req.params.goodsId, data)
+      .then(
+          (model) => {
+          if (model !== null) {
+              return res.send(new ResponseUtil({redirect: "/Goods"}, null));
+          } else {
+              return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+          }
+          }
+      ).catch((e) => {
+      return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+      })
+  });
+  app.post("/api/goods/delGoodsByShopId/:shopId",(req, res) => {
+    let goodsModel = new GoodsModel();
+    goodsModel.delteGoodsByShopId(req.params.shopId)
+    .then(() => {
+    return res.send(new ResponseUtil({redirect: "/Seller"}, null));
+    }).catch((e) => {
+    return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+    })
+});
 };
 
 module.exports = goodsAPI;

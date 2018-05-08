@@ -14,6 +14,10 @@ import MenuItem from 'material-ui/MenuItem';
 import bigg from 'SharedStyles/bigg.jpg';
 import Button from 'Components/Button';
 import { getUser } from 'Views/SignIn/actions';
+import { getShop } from 'Views/MyShop/actions';
+import { getSeller } from 'Views/SellerAdmin/actions';
+import { getOrder } from 'Views/OrderAdmin/actions';
+import { getGoods } from 'Views/Goods/actions';
 import { SIGNIN_NAMENULL } from 'Views/SignIn/constants';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
@@ -32,8 +36,16 @@ class App extends Component {
   componentWillMount() {
     const {
       getUser,
+      getShop,
+      getSeller,
+      getOrder,
+      getGoods
     } = this.props;
     getUser();
+    getShop();
+    getSeller();
+    getOrder();
+    getGoods();
   }
   render() {
         return (
@@ -56,9 +68,14 @@ class App extends Component {
   export default connect(
     (state) => { return {
       user: state.user,
+      shop: state.shop
     }; },
     (dispatch) => { return {
       getUser: () => { dispatch(getUser()); },
+      getShop: () => { dispatch(getShop()); },
+      getSeller: () => { dispatch(getSeller()); },
+      getOrder: () => { dispatch(getOrder()); },
+      getGoods: () => { dispatch(getGoods()); },
     }; }
   )(App);
 

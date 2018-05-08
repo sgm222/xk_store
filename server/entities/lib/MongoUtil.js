@@ -112,6 +112,16 @@ class MongoUtil {
         }
         return Model.remove({_id: id});
     }
+    deleteModelByKeyMap(modelName, schema, keymap) {
+        let modelSchema = mongoose.Schema(schema);
+        let Model;
+        try {
+            Model = mongoose.model(modelName);                //判断Model是不是已存在
+        } catch (error) {
+            Model = mongoose.model(modelName, modelSchema);
+        }
+        return Model.remove(keymap);
+    }
 };
 
 module.exports = MongoUtil;

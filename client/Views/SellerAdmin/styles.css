@@ -1,0 +1,42 @@
+.container {
+    margin-top: 20px;
+    display: flex;
+  }
+  
+  .loadingMsg {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .errorMsg {
+    margin-top: 20px;
+    color: rgba(231, 76, 60,1.0);
+    font-size: 12px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .table{
+    text-align: center;
+    border-collapse:collapse;
+    margin-top:20px;
+    font-size: 14px;
+  }
+  .table thead{
+    background-color:rgba(0,0,0,0.1);
+  }
+  .table tr{
+    height:36px;
+    line-height: 36px;
+  }
+  .table th{
+    padding:0 30px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .table td{
+    padding:0 30px;
+    border: 1px solid rgba(0,0,0,0.1);
+  }
+  .table tbody{
+    padding: 5px;
+  }
+  

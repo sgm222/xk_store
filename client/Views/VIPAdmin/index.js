@@ -7,16 +7,81 @@ import { Link } from 'react-router';
 import { getVip } from './actions';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Avatar from 'material-ui/Avatar';
-
+import MenuItem from 'material-ui/MenuItem';
+import Dialog from 'material-ui/Dialog';
+import bigg from 'SharedStyles/bigg.jpg';
+import Button from 'Components/Button';
+import FlatButton from 'material-ui/FlatButton';
 class VIPAdmin extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        open: false,
+        _id: ""
+    }
+  }
   componentDidMount() {
     const { getVip } = this.props;
     getVip();
   }
-
+  handleOpen = (_id) => {
+    this.setState({
+      open: true,
+      _id: _id
+    });
+  };
+  handleClose = () => {
+    this.setState({open: false});
+  };
+  OnDelete = () => {
+    this.setState({open: false});
+    let url = "/api/user/delUser";
+    let body = {
+      userId: this.state._id
+    };
+    fetch(url, {
+        method: "post",
+        body: JSON.stringify(body),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        credentials: 'include'     //很重要，设置session,cookie可用
+    }).then(
+        (response) => {
+            return response.json();
+        }
+    ).then(
+        (json) => {
+          if (json.result) {
+            let result=json.result;
+            if (result.redirect) {
+                window.location.href = result.redirect;
+            }
+            else {
+                // this.setState({failureOpen: true})
+            }
+        }
+        }
+    ).catch(
+        (ex) => {
+          this.setState({failureOpen: true,});
+        });
+  }
   render() {
     const { vips } = this.props;
-    console.log(vips);
+    const actions = [
+      <FlatButton
+        label="取消"
+        primary={true}
+        onClick={this.handleClose}
+      />,
+      <FlatButton
+        label="确定"
+        primary={true}
+        keyboardFocused={true}
+        onClick={this.OnDelete}
+      />,
+    ];
     if (vips.fetchingVIP) {
           let data = vips.vips;
           return (
@@ -49,8 +114,7 @@ class VIPAdmin extends Component {
                             </MuiThemeProvider>
                         </td>
                         <td>
-                          <Link >删除</Link>
-                          <Link style={{marginLeft:'10px'}}>编辑</Link>
+                        <Link onClick={(id) => this.handleOpen(item._id)}>删除</Link>
                         </td>
                     </tr>
                     </tbody>
@@ -58,6 +122,15 @@ class VIPAdmin extends Component {
                 }
               </table>
             }
+            <MuiThemeProvider>
+              <Dialog
+                actions={actions}
+                modal={false}
+                open={this.state.open}
+                >
+                确定删除吗？
+              </Dialog>
+            </MuiThemeProvider>
             </div>
           );
     }

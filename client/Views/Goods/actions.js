@@ -6,7 +6,9 @@ import {
 } from './constants';
 import {
   fetchGoods,
-  fetchGoodsById
+  fetchGoodsById,
+  passGoods,
+  delGoodsByShopId
 } from './api';
 
 export const getGoods = () => {
@@ -51,3 +53,48 @@ export const getGoodsById = (goodsId = '') => {
       }
     }
 };
+export const onPass = (goodsId) => {
+  return (dispatch, getState) => {
+      passGoods(goodsId).then(
+          (response) => {
+              return response.data;
+          }
+      ).then(
+          (json) => {
+              if (json.result) {
+                  let result=json.result;
+                  if (result.redirect) {
+                      window.location.href = result.redirect;
+                  }
+                  else {
+                      // this.setState({failureOpen: true})
+                  }
+              }
+          }
+      ).catch(
+      //dispatch({ type: FETCHING_USER_FAILURE })
+      )
+  }
+};
+export const onDelGoods = (shopId) => {
+    delGoodsByShopId(shopId).then(
+        (response) => {
+            return response.data;
+        }
+    ).then(
+        (json) => {
+            if (json.result) {
+                let result=json.result;
+                if (result.redirect) {
+                    window.location.href = result.redirect;
+                }
+                else {
+                    // this.setState({failureOpen: true})
+                }
+            }
+        }
+    ).catch(
+    //dispatch({ type: FETCHING_USER_FAILURE })
+    )
+};
+

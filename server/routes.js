@@ -8,6 +8,8 @@ const userAPI = require('./entities/user/api');
 const goodsAPI = require('./entities/goods/api');
 const discussionAPI = require('./entities/discussion/api');
 const opinionAPI = require('./entities/opinion/api');
+const shopAPI = require('./entities/shop/api');
+const orderAPI = require('./entities/order/api');
 //const adminAPI = require('./entities/admin/api');
 
 /**
@@ -34,7 +36,8 @@ const routesConfig = (app) => {
 
   // apply opinion apis
   opinionAPI(app);
-
+  shopAPI(app);
+  orderAPI(app);
   // apply admin apis
   //adminAPI(app);
 

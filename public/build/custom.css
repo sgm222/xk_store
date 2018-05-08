@@ -366,9 +366,11 @@ line-height: 1.428571429;
 	
     .navbar-side {
         z-index: 1;
-        position: absolute;
-        width: 230px;
-        height: 662px;
+        position: fixed;
+        width:230px;
+        left:0px;
+        top:0px;
+        min-height: 100%;
     }
 
    .navbar {

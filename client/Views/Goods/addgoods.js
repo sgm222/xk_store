@@ -14,7 +14,7 @@ import { DialogAlert } from 'Components/DialogAlert/index';
 import { Link } from 'react-router';
 import { fetchGoodsById } from './api';
 
-let nameTF, typeTF, priceTF, weightTF, salecountTF, countTF, directionTF, uploadInput, file;
+let nameTF, typeTF, priceTF, weightTF,  countTF, directionTF, uploadInput, file;
 class AddGoods extends React.Component {
     constructor(props) {
         super(props);
@@ -28,7 +28,6 @@ class AddGoods extends React.Component {
             nameError: "",
             priceError: "",
             weightError: "",
-            salecounteError: "",
             countError: "",
             directionError: "",
             error: "",
@@ -36,7 +35,6 @@ class AddGoods extends React.Component {
             name: "",
             price: "",
             weight: "",
-            salecount: "",
             count: "",
             direction: ""
         }
@@ -47,7 +45,6 @@ class AddGoods extends React.Component {
         typeTF = this.refs.typeTF;
         priceTF = this.refs.priceTF;
         weightTF = this.refs.weightTF;
-        salecountTF = this.refs.salecountTF;
         countTF = this.refs.countTF;
         directionTF = this.refs.directionTF; 
     }
@@ -70,7 +67,6 @@ class AddGoods extends React.Component {
                             type: goods.type,
                             price: goods.price,
                             weight: goods.weight,
-                            salecount: goods.salecount,
                             count: goods.count,
                             direction: goods.direction,
                             selectedFileName: goods.fileName
@@ -99,7 +95,6 @@ class AddGoods extends React.Component {
         let typeStr = typeTF.value;
         let priceStr = priceTF.getValue();
         let weightStr = weightTF.getValue();
-        let salecountStr = salecountTF.getValue();
         let countStr = countTF.getValue();
         let directionStr = directionTF.getValue();    
         let infoFinished = true;
@@ -121,12 +116,6 @@ class AddGoods extends React.Component {
             });
             infoFinished = false;
         }
-        if (salecountStr === "") {
-            this.setState({
-                salecountError: "不能为空"
-            });
-            infoFinished = false;
-        }
         if (countStr === "") {
             this.setState({
                 countError: "不能为空"
@@ -143,7 +132,6 @@ class AddGoods extends React.Component {
         formData.append('type', typeStr);
         formData.append('price', priceStr);
         formData.append('weight', weightStr);
-        formData.append('salecount', salecountStr);
         formData.append('count', countStr);
         formData.append('direction', directionStr);
         formData.append('fileName', this.state.selectedFileName);
@@ -231,7 +219,7 @@ class AddGoods extends React.Component {
                       <option value="粮油">粮油</option>
                       <option value="肉制品">肉制品</option>
                       <option value="天然干货">天然干货</option>
-                      <option value="茶">茶</option>
+                      <option value="其他">其他</option>
                 </select>
                 <div>价格*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
@@ -265,22 +253,6 @@ class AddGoods extends React.Component {
                             ref="weightTF"
                             id="weightTF"
                             name="weightTF"/>           
-                <div>销量*</div>
-                <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
-                            errorText={this.state.salecountError}
-                            value={this.state.salecount || ""}
-                            onChange={
-                                (event, str) => {
-                                    this.setState({salecount: str});
-                                    if (this.state.salecountError !== "") {
-                                        this.setState({
-                                            salecountError: ""
-                                        })
-                                    }
-                            }}
-                            ref="salecountTF"
-                            id="salecountTF"
-                            name="salecountTF"/> 
                 <div>库存*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.countError}
@@ -321,7 +293,7 @@ class AddGoods extends React.Component {
                                               style={{marginLeft: "0.5em",backgroundColor:"#ddd"}}
                                 >选择文件</Button>
                             </div>
-                            <div style={{flex: 1,height:"20px"}}>
+                            <div style={{flex: 1,height:"40px"}}>
                                 {this.state.selectedFileName}
                             </div>
                             <input type="file"
