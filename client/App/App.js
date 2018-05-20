@@ -18,9 +18,9 @@ import { getShop } from 'Views/MyShop/actions';
 import { getSeller } from 'Views/SellerAdmin/actions';
 import { getOrder } from 'Views/OrderAdmin/actions';
 import { getGoods } from 'Views/Goods/actions';
+import { getAddress } from '../Views/Address/actions';
 import { SIGNIN_NAMENULL } from 'Views/SignIn/constants';
 import injectTapEventPlugin from 'react-tap-event-plugin';
-
 let userNameTF;
 let passTF;
 class App extends Component {
@@ -39,13 +39,15 @@ class App extends Component {
       getShop,
       getSeller,
       getOrder,
-      getGoods
+      getGoods,
+      getAddress
     } = this.props;
     getUser();
     getShop();
     getSeller();
     getOrder();
     getGoods();
+    getAddress();
   }
   render() {
         return (
@@ -76,6 +78,7 @@ class App extends Component {
       getSeller: () => { dispatch(getSeller()); },
       getOrder: () => { dispatch(getOrder()); },
       getGoods: () => { dispatch(getGoods()); },
+      getAddress: () => { dispatch(getAddress()); }
     }; }
   )(App);
 

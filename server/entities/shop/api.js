@@ -1,6 +1,7 @@
 const ShopModel = require('./model');
 const ResponseUtil = require('../lib/ResponseUtil');
 const multer = require('multer');
+const request = require('request');
 let fileName;
 let storage = multer.diskStorage({
   destination: './public/build/uploadFiles/',
@@ -122,6 +123,7 @@ const shopAPI = (app) => {
                 req.session.user._id,
                 shop.name,
                 0,
+                0,
                 '',
                 shop.corporation,
                 shop.tel,
@@ -161,7 +163,24 @@ const shopAPI = (app) => {
         return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
         })
     });
-
+    app.post("/api/shop/modifyLevel",(req, res) => {
+        let shopModel = new ShopModel();
+        let data = {
+            level: req.body.level,
+        }
+        shopModel.findShopAndUpdate(req.body.shopId, data)
+        .then(
+            (model) => {
+            if (model !== null) {
+                return res.send(new ResponseUtil({redirect: "/Seller"}, null));
+            } else {
+                return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+            }
+            }
+        ).catch((e) => {
+        return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+        })
+    });
 };
 
 module.exports = shopAPI;

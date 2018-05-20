@@ -90,6 +90,11 @@ class AddGoods extends React.Component {
         let value = e.target.value;
         this.setState({type: value})
     }
+    changeName(e) {
+        this.setState({
+            type: e.target.value,
+        })
+    };
     onAdd(goodsId = '') {
         let nameStr = nameTF.getValue();
         let typeStr = typeTF.value;
@@ -208,18 +213,14 @@ class AddGoods extends React.Component {
                             borderColor: '#e0e0e0',
                             margin: '10px 0px'
                         }}
-                        onChange={
-                            (event, value) => {
-                                this.setState({
-                                    type: value,
-                                })
-                        }}>
-                      <option value="水果">水果</option>
-                      <option value="蔬菜">蔬菜</option>
-                      <option value="粮油">粮油</option>
-                      <option value="肉制品">肉制品</option>
-                      <option value="天然干货">天然干货</option>
-                      <option value="其他">其他</option>
+                        onChange={this.changeName.bind(this)}
+                >
+                <option value="水果">水果</option>
+                <option value="蔬菜">蔬菜</option>
+                <option value="粮油">粮油</option>
+                <option value="肉制品">肉制品</option>
+                <option value="天然干货">天然干货</option>
+                <option value="其他">其他</option>
                 </select>
                 <div>价格*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
@@ -305,15 +306,15 @@ class AddGoods extends React.Component {
                                    onChange={(event) => this.avatarSelected(event)}/> 
                 {this.state.add && <Button onClick={() => this.onAdd()}
                                           primary={true}
-                                          style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                                          style={{width: "120px", height:'36px', alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 >添加</Button>}
                 {!this.state.add && <Button onClick={() => this.onAdd(this.state._id)}
                                           primary={true}
-                                          style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                                          style={{width: "120px", height:'36px', alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 >修改</Button>}
                 <Button
                         primary={true}
-                        style={{width: "120px", marginLeft:"20px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                        style={{width: "120px", height:'36px', marginLeft:"20px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 ><Link to="/Goods" style={{color:"#fff"}}>返回</Link></Button>      
                  <Dialog
                     modal={false}

@@ -176,16 +176,16 @@ class Shop extends React.Component {
                             marginLeft: '280px',
                             padding: '20px 50px'
                         }}>
-                            <p>店铺名称:&nbsp;&nbsp;{shop.shop.result.result[0].name}</p>
-                            <p>法人名称:&nbsp;&nbsp;{shop.shop.result.result[0].corporation}</p>
-                            <p>法人手机号:&nbsp;&nbsp;{shop.shop.result.result[0].tel}</p>
-                            <p>法人身份证号:&nbsp;&nbsp;{shop.shop.result.result[0].idcard}</p>
-                            <p>资质证号:&nbsp;&nbsp;{shop.shop.result.result[0].qualification}</p>
-                            <p>营业执照:&nbsp;&nbsp;<img src={"/build/uploadFiles/" + shop.shop.result.result[0].fileName} style={{
+                            <p style={{margin:'10px 10px'}}>店铺名称:&nbsp;&nbsp;{shop.shop.result.result[0].name}</p>
+                            <p style={{margin:'10px 10px'}}>法人名称:&nbsp;&nbsp;{shop.shop.result.result[0].corporation}</p>
+                            <p style={{margin:'10px 10px'}}>法人手机号:&nbsp;&nbsp;{shop.shop.result.result[0].tel}</p>
+                            <p style={{margin:'10px 10px'}}>法人身份证号:&nbsp;&nbsp;{shop.shop.result.result[0].idcard}</p>
+                            <p style={{margin:'10px 10px'}}>资质证号:&nbsp;&nbsp;{shop.shop.result.result[0].qualification}</p>
+                            <p style={{margin:'10px 10px'}}>营业执照:&nbsp;&nbsp;<img src={"/build/uploadFiles/" + shop.shop.result.result[0].fileName} style={{
                                 width:'80px',
                                 height:'80px'
                               }}/></p>
-                            <p>状态:&nbsp;&nbsp;{this.changeStatus(shop.shop.result.result[0].status)}
+                            <p style={{margin:'10px 10px'}}>状态:&nbsp;&nbsp;{this.changeStatus(shop.shop.result.result[0].status)}
                                 {shop.shop.result.result[0].status === 1 && 
                                     <span>{'(' + shop.shop.result.result[0].statusError + ')'}</span>
                                 }
@@ -196,7 +196,7 @@ class Shop extends React.Component {
                             >编辑</Link>
                             <Button onClick={() => this.delOpen(shop.shop.result.result[0]._id)}
                                     primary={true}
-                                    style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff",  marginLeft:"10px"}}
+                                    style={{width: "120px", height:'37px', alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff",  marginLeft:"10px"}}
                             >删除</Button>
                         </Card>
                         </MuiThemeProvider>
@@ -213,7 +213,7 @@ class Shop extends React.Component {
                     )
             } else {
                 return(
-                    <div style={{marginLeft: '280px', marginTop:"20px"}}>
+                    <div style={{marginLeft: '280px', marginTop:"50px"}}>
                         <Link to='/CreateShop' className="btn btn-success square-btn-adjust" 
                             style={{display:'block', marginRight:'50px', width:'100px', marginTop:'20px'}}>创建店铺</Link>
                         <p style={{marginTop:'10px'}}>还没有店铺，快去创建吧~~~</p>
@@ -223,49 +223,49 @@ class Shop extends React.Component {
         } else if(user.fetchingUser && user.type === '2') {
             if(shop.fetchingShop && shop.shop.result !== null) {
                 return (
-                    <div style={{marginLeft: '270px', marginTop:"20px"}}>
-                    <table className={styles.table}>
-                        <thead>
-                          <tr>
-                            <th>店铺名称</th>
-                            <th>法人名称</th>
-                            <th>法人手机号</th>
-                            <th>法人身份证号</th>
-                            <th>资质证号</th>
-                            <th>营业执照</th>
-                            <th>状态</th>
-                            <th>操作</th>
-                          </tr>
-                        </thead>
-                        {shop.shop.result.result.map((item, idx) => (
-                            <tbody style={{verticalAlign:'center'}}>
-                              <tr key={idx}>
-                                  <td>{item.name}</td>
-                                  <td>{item.corporation}</td>
-                                  <td>{item.tel}</td>
-                                  <td>{item.idcard}</td>
-                                  <td>{item.qualification}</td>
-                                  <td><img src={"/build/uploadFiles/" + item.fileName} style={{
-                                    width:'30px',
-                                    height:'30px'
-                                  }}/></td>
-                                  <td>{this.changeStatus(item.status)}</td>
-                                {item.status === 0 && 
-                                    <td>
-                                    <Link onClick={(id) => this.passOpen(item._id)} style={{marginRight:'10px', display:'block'}}>审核通过</Link>
-                                    <Link onClick={(id) => this.nopassOpen(item._id)}>审核不通过</Link>
-                                    </td>
-                                }
-                                {(item.status === 1 || item.status === 2) && 
-                                    <td>
-                                    <Link onClick={(id) => this.delOpen(item._id)}>删除</Link>
-                                    </td>
-                                } 
-                              </tr>
-                              </tbody>
-                            ))
+                    <div style={{marginLeft: '270px', marginTop:"50px", borderTop:'1px dashed #C8C7C7',}}>
+                    <table className="tabindex" style={{marginTop:'20px'}} width="100%" cellPadding="0" cellSpacing="0">
+                  <thead> 
+                  <tr>
+                    <th style={{width:"10%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>店铺名称</div></th>
+                    <th style={{width:"10%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>法人名称</div></th>
+                    <th style={{width:"15%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>法人手机号</div></th>
+                    <th style={{width:"15%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>法人身份证号</div></th>
+                    <th style={{width:"15%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>资质证号</div></th>
+                    <th style={{width:"8%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>营业执照</div></th>
+                    <th style={{width:"10%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>状态</div></th>
+                    <th style={{width:"17%", backgroundColor:"#f8f8f8", scope:"col"}}>操作</th>                                                                           
+                  </tr>
+                  </thead>
+                  {shop.shop.result.result.map((item, idx) => (
+                    <tbody style={{verticalAlign:'center'}}>
+                        <tr key={idx} style={idx%2 === 0 ? {backgroundColor:'#fff'}: {backgroundColor:'#f8f8f8'}}>
+                            <td>{item.name}</td>
+                            <td>{item.corporation}</td>
+                            <td>{item.tel}</td>
+                            <td>{item.idcard}</td>
+                            <td>{item.qualification}</td>
+                            <td><img src={"/build/uploadFiles/" + item.fileName} style={{
+                            width:'30px',
+                            height:'30px'
+                            }}/></td>
+                            <td>{this.changeStatus(item.status)}</td>
+                        {item.status === 0 && 
+                            <td>
+                            <Link onClick={(id) => this.passOpen(item._id)} style={{marginRight:'10px', display:'inline-block'}}>审核通过</Link>
+                            <Link onClick={(id) => this.nopassOpen(item._id)}>审核不通过</Link>
+                            </td>
                         }
-                    </table>
+                        {(item.status === 1 || item.status === 2) && 
+                            <td>
+                            <Link onClick={(id) => this.delOpen(item._id)}>删除</Link>
+                            </td>
+                        } 
+                        </tr>
+                        </tbody>
+                    ))
+                    }
+                     </table>
                     <MuiThemeProvider>
                         <Dialog
                             actions={passactions}

@@ -3,6 +3,7 @@ let shopSechma = {
   userId: String,
   name: String,
   status: Number,
+  level : Number,
   statusError: String,
   corporation: String ,
   tel: String,
@@ -12,10 +13,11 @@ let shopSechma = {
 };
 let modelName = "shop";
 class ShopModel {
-    constructor(userId, name, status, statusError, corporation, tel, idcard, qualification, fileName) {
+    constructor(userId, name, status, level, statusError, corporation, tel, idcard, qualification, fileName) {
       this.userId = userId;
       this.name = name;
       this.status = status;
+      this.level = level;
       this.statusError = statusError;
       this.corporation = corporation;
       this.tel = tel;
@@ -29,6 +31,7 @@ class ShopModel {
           userId: this.userId,
           name: this.name,
           status: this.status,
+          level: this.level,
           statusError: this.statusError,
           corporation:this.corporation ,
           tel:this.tel,

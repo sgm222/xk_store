@@ -187,9 +187,9 @@ class DA extends Component {
         
         return (
             <div>
-                <div id="main" style={{ width: 400, height: 400, marginLeft: '280px', marginTop:"20px" }}></div>
-                <div id="one" style={{ width: 400, height: 400, marginLeft: '280px', marginTop:"20px" }}></div>
-                <div id="two" style={{ width: 400, height: 400, marginLeft: '280px', marginTop:"20px" }}></div>
+                <div id="main" style={{ width: 400, height: 400, display:'inine-block', float:'left', marginLeft: '280px', marginTop:"20px" }}></div>
+                <div id="one" style={{ width: 400, height: 400, display:'inine-block', float:'right', marginRight: '100px', marginTop:"20px" }}></div>
+                <div id="two" style={{ width: 400, height: 400, display:'inine-block', marginLeft: '280px', marginTop:"20px" }}></div>
             </div>
        );
     }

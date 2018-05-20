@@ -205,25 +205,26 @@ class Goods extends Component {
                     style={{display:'block', marginRight:'50px', width:'100px', marginTop:'20px'}}>增加商品</Link>
               {data.error && 
                   <span style={{marginTop:"20px", display:"block"}}>{data.error.errorMsg}</span>
-                }
-              {data.result && <table className={styles.table}>
-                <thead>
+              }
+              {data.result &&
+                <table className="tabindex" style={{marginTop:'20px'}} width="100%" cellPadding="0" cellSpacing="0">
+                  <thead> 
                   <tr>
-                    <th>名称</th>
-                    <th>图片</th>
-                    <th>种类</th>
-                    <th>价格</th>
-                    <th>净重</th>
-                    <th>销量</th>
-                    <th>库存</th>
-                    <th>详情</th>
-                    <th>状态</th>
-                    <th>操作</th>
+                    <th style={{width:"10%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>名称</div></th>
+                    <th style={{width:"9%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>图片</div></th>
+                    <th style={{width:"9%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>种类</div></th>
+                    <th style={{width:"8%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>价格</div></th>
+                    <th style={{width:"8%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>净重</div></th>
+                    <th style={{width:"8%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>销量</div></th>
+                    <th style={{width:"8%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>库存</div></th>
+                    <th style={{width:"11%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>详情</div></th>
+                    <th style={{width:"10%", backgroundColor:"#f8f8f8", scope:"col"}}><div style={{textAlign:'center'}}>状态</div></th>
+                    <th style={{width:"19%", backgroundColor:"#f8f8f8", scope:"col"}}>操作</th>
                   </tr>
-                </thead>
+                  </thead>
                 {data.result.result.map((item, idx) => (
                   <tbody>
-                    <tr key={idx}>
+                    <tr style={idx%2 === 0 ? {backgroundColor:'#fff'}: {backgroundColor:'#f8f8f8'}} key={idx}>
                         <td>{item.name}</td>
                         <td><img src={"/build/uploadFiles/" + item.fileName} style={{
                           width:'30px',
@@ -244,7 +245,7 @@ class Goods extends Component {
                         }
                         {user.fetchingUser && user.type === '2' && item.status === 0 && 
                             <td>
-                            <Link onClick={(id) => this.passOpen(item._id)} style={{marginRight:'10px', display:'block'}}>审核通过</Link>
+                            <Link onClick={(id) => this.passOpen(item._id)} style={{marginRight:'10px', display:'inline-block'}}>审核通过</Link>
                             <Link onClick={(id) => this.nopassOpen(item._id)}>审核不通过</Link>
                             </td>
                         }
@@ -254,7 +255,7 @@ class Goods extends Component {
                             </td>
                         }
                     </tr>
-                    </tbody>
+                  </tbody>
                   ))
                 }
               </table>

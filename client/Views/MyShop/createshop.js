@@ -86,7 +86,6 @@ class CreateShop extends React.Component {
             selectedFileName: file.name
         });
     }
-    
     onAdd(shopId = '') {
         let nameStr = nameTF.getValue();
         let corporationStr = corporationTF.getValue();
@@ -196,7 +195,7 @@ class CreateShop extends React.Component {
         } else {
         return (
             <MuiThemeProvider>
-            <Card style={{
+            <div style={{
                         marginTop: "50px",
                         width: "400px",
                         marginLeft: '280px',
@@ -235,7 +234,7 @@ class CreateShop extends React.Component {
                             ref="corporationTF"
                             id="corporationTF"
                             name="corporationTF"/>
-                <div>法人电话*</div>
+                <div>法人手机号*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.telError}
                             value={this.state.tel || ""}
@@ -250,7 +249,7 @@ class CreateShop extends React.Component {
                             }}
                             ref="telTF"
                             id="telTF"
-                            name="telTF"/>           
+                            name="telTF"/>         
                 <div>法人身份证号*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.idcardrror}
@@ -267,6 +266,7 @@ class CreateShop extends React.Component {
                             ref="idcardTF"
                             id="idcardTF"
                             name="idcardTF"/> 
+                
                 <div>资质证号*</div>
                 <TextField style={{flex: 1,height:"32px",marginBottom:"0.5em"}}
                             errorText={this.state.qualificationError}
@@ -303,15 +303,15 @@ class CreateShop extends React.Component {
                                    onChange={(event) => this.avatarSelected(event)}/> 
                 {this.state.add && <Button onClick={() => this.onAdd()}
                                           primary={true}
-                                          style={{width: "120px",  alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                                          style={{width: "120px", height:'36px', alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 >创建</Button>}
                 {!this.state.add && <Button onClick={() => this.onAdd(this.state._id)}
                                           primary={true}
-                                          style={{width: "120px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                                          style={{width: "120px", height:'36px', alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 >修改</Button>}
                 <Button
                         primary={true}
-                        style={{width: "120px", marginLeft:"20px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                        style={{width: "120px", height:'36px', marginLeft:"20px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                 ><Link to="/Shop" style={{color:"#fff"}}>返回</Link></Button>      
                  <Dialog
                     modal={false}
@@ -325,7 +325,7 @@ class CreateShop extends React.Component {
                     >
                     {this.state.add ? '创建失败' : '修改失败'}
                 </Dialog>
-            </Card>
+            </div>
             </MuiThemeProvider>
         );
     }

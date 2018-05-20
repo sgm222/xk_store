@@ -4,22 +4,25 @@ let userSechma = {
     userName: String,
     passWord: String,
     fileName: String,
-    type: String
+    type: String,
+    level: Number,
 };
 let modelName = "user";
 class UserModel {
-    constructor(userName, passWord, fileName, type) {
+    constructor(userName, passWord, fileName, type, level) {
         this.userName = userName;
         this.passWord = passWord;
         this.fileName = fileName;
         this.type = type;
+        this.level = level;
     }
 
-    setUser(userName, passWord, fileName, type) {
+    setUser(userName, passWord, fileName, type, level) {
         this.userName = userName;
         this.passWord = passWord;
         this.fileName = fileName;
         this.type = type;
+        this.level = level;
     }
 
     createUser() {
@@ -27,7 +30,8 @@ class UserModel {
             userName: this.userName,
             passWord: this.passWord,
             fileName: this.fileName,
-            type: this.type
+            type: this.type,
+            level: this.level,
         };
         let mongoUtil = new MongoUtil();
         return mongoUtil.createModel(modelName, userSechma, userValue);
@@ -50,6 +54,10 @@ class UserModel {
         let mongoUtil = new MongoUtil();
         return mongoUtil.deleteModel(modelName, userSechma, id);
     }
+    findUserAndUpdate(id, data) {
+        let mongoUtil = new MongoUtil();
+        return mongoUtil.findModelAndUpdateByKeyMap(modelName, userSechma, id, data);
+      }
 }
 
 module.exports = UserModel;

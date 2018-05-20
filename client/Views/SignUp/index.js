@@ -231,7 +231,7 @@ class SignUp extends React.Component {
                                    onChange={(event) => this.avatarSelected(event)}/>
                              <Button onClick={() => this.onSignUp()}
                                           primary={true}
-                                          style={{width: "256px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                                          style={{width: "256px", height:'36px', alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                             >注册</Button>
                         </div>
                     </Card>

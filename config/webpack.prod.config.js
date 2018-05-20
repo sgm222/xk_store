@@ -58,7 +58,7 @@ module.exports = {
   ],
 
   resolve: {
-    extensions: ['', '.js', '.css'],
+    extensions: ['', '.js', '.css', '.less'],
     alias: {
       SharedStyles: sharedStylesPath,
       Components: componentsPath,

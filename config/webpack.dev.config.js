@@ -35,14 +35,14 @@ module.exports = {
     loaders: [
       {
         test: /\.js$/,
-        loaders: [ 'react-hot', 'babel-loader' ],
         exclude: [nodeModulesPath],
+        loaders: [ 'react-hot', 'babel-loader' ], 
       },
       {
         test: /\.css$/,
         loaders: [
           'style-loader',
-          'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+          'css-loader',
           'postcss-loader?sourceMap=inline',
         ],
       },
@@ -57,7 +57,6 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
   ],
-
   resolve : {
     extensions: ['', '.js', '.css'],
     alias: {

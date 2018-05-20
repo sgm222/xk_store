@@ -162,7 +162,7 @@ class SignIn extends Component {
                                     }}>{this.state.error}</span>
                                     <Button onClick={() => this.onSignIn()}
                                                 primary={true}
-                                                style={{width: "256px", marginTop:"10px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
+                                                style={{width: "256px", height:'36px', marginTop:"10px", alignSelf: "center", borderRadius:"5px", backgroundColor:"#6FCE53", color:"#fff"}}
                                     >登录</Button>
                                 </div>
                             </Card>

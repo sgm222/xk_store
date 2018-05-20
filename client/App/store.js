@@ -10,6 +10,7 @@ import { goodsDetailReducer } from '../Views/Goods/detailreducers';
 import { sellerReducer } from '../Views/SellerAdmin/reducers';
 import { shopReducer } from '../Views/MyShop/reducers';
 import { orderReducer } from '../Views/OrderAdmin/reducers';
+import { addressReducer } from '../Views/Address/reducers';
 // root reducer for app
 const rootReducer = combineReducers({
   user: userReducer,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   goodsDetail: goodsDetailReducer,
   seller: sellerReducer,
   shop: shopReducer,
-  order: orderReducer
+  order: orderReducer,
+  address: addressReducer
 });
 
 // dev tool extension

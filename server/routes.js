@@ -10,6 +10,7 @@ const discussionAPI = require('./entities/discussion/api');
 const opinionAPI = require('./entities/opinion/api');
 const shopAPI = require('./entities/shop/api');
 const orderAPI = require('./entities/order/api');
+const addressAPI = require('./entities/address/api');
 //const adminAPI = require('./entities/admin/api');
 
 /**
@@ -38,6 +39,7 @@ const routesConfig = (app) => {
   opinionAPI(app);
   shopAPI(app);
   orderAPI(app);
+  addressAPI(app);
   // apply admin apis
   //adminAPI(app);
 

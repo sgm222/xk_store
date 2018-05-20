@@ -7,8 +7,8 @@ ul, li, ol {list-style: none;}
 .am-thumbnails > li {padding: 0 0rem 0.2rem .2rem;}
 .am-container {padding-left:0px;padding-right:0px ;}
 .am-container > .am-g {margin-left: 0px;margin-right:0px ;}
-img{width:100%;}
 .slideall{background:#fff ;}
+img{width:100%}
 .smallnav img,.smallnav a,.am-g.smallnav {border:none;}
 a:hover {color:#000000;}
 .e-price{color:red; font-size:14px;}

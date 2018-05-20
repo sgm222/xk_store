@@ -137,6 +137,25 @@ const userAPI = (app) => {
         req.flash('success', '登出成功');
         return res.json({redirect: "/"});
     });
+    app.post("/api/user/modifyLevel",(req, res) => {
+        let userModel = new UserModel();
+        let data = {
+            level: req.body.level
+        }
+        console.log(data);
+        userModel.findUserAndUpdate(req.body.userId, data)
+        .then(
+            (model) => {
+            if (model !== null) {
+                return res.send(new ResponseUtil({redirect: "/Vip"}, null));
+            } else {
+                return res.send(new ResponseUtil(null, {errorMsg: "没有数据~", errorType: 1}));
+            }
+            }
+        ).catch((e) => {
+        return res.send(new ResponseUtil(null, {errorMsg: "出错啦，请重试", errorType: 2}));
+        })
+    });
 };
 
 module.exports = userAPI;
